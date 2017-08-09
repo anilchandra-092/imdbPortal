@@ -1,0 +1,66 @@
+[
+  {
+    "title":"fida",
+    "avgRating":4,
+    "shortDescription":"gud movie"
+  },
+  {
+    "title":"samantakamani",
+    "avgRating":3.5,
+    "shortDescription":"suspence movie"
+  },
+  {
+    "title":"nenokadine",
+    "avgRating":4,
+    "shortDescription":"thriller movie"
+  },
+  {
+    "title":"Dammu",
+    "avgRating":3,
+    "shortDescription":"action movie"
+  },
+  {
+    "title":"nanna",
+    "avgRating":3.5,
+    "shortDescription":"sentimental movie"
+  },
+  {
+    "title":"fida",
+    "avgRating":4,
+    "shortDescription":"gud movie"
+  },
+  {
+    "title":"samantakamani",
+    "avgRating":3.5,
+    "shortDescription":"suspence movie"
+  },
+  {
+    "title":"nenokadine",
+    "avgRating":4,
+    "shortDescription":"thriller movie"
+  },
+  {
+    "title":"Dammu",
+    "avgRating":3,
+    "shortDescription":"action movie"
+  },
+  {
+    "title":"nanna",
+    "avgRating":3.5,
+    "shortDescription":"sentimental movie"
+  },
+  {
+    "title":"nanna1",
+    "avgRating":3.5,
+    "shortDescription":"sentimental movie"
+  },
+  {
+    "title":"nanna2",
+    "avgRating":3.5,
+    "shortDescription":"sentimental movie"
+  },{
+  "title":"nanna3",
+  "avgRating":3.5,
+  "shortDescription":"sentimental movie"
+}
+]

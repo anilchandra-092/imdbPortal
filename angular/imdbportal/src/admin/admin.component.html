@@ -1,0 +1,34 @@
+<div class="col-sm-9">
+  <p>{{errorMsg}}</p>
+  <div class="row text-center">
+
+    <div class="col-sm-4" *ngFor="let movie of movies">
+      <div class="navbar-right">
+        <span class="glyphicon glyphicon-trash" (click)="onTrahClick(movie.id)"></span><p>  </p>
+      </div>
+      <div class="panel panel-primary" (click)="onMovieClick(movie.id)">
+        <div class="panel-heading">
+          title: <strong>{{movie.title}}</strong>
+        </div>
+        <div class="panel-body">about: {{movie.shortDescription}}</div>
+        <div class="panel-footer">Rating :{{movie.avgRating}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center">
+    <ul class="pagination">
+      <li *ngFor="let num of paginationArray; let i=index;" (click)="onPaginationClick(i+1)"><a>{{num}}</a></li>
+    </ul>
+  </div>
+
+</div>
+<div class="col-sm-3 sidebar">
+  <div class="btn-group-vertical col-sm-12">
+    <button type="button" class="btn btn-primary" (click)="onAddMovieClick()">Add Movie</button>
+    <button type="button" class="btn btn-primary" (click)="onAllMovieClick()">All Movies</button>
+    <button type="button" class="btn btn-primary" (click)="onComedyMovieClick()">Comedy Movies</button>
+    <button type="button" class="btn btn-primary" (click)="onRomanticMovieClick()">Romantic Movies</button>
+    <button type="button" class="btn btn-primary" (click)="onScifiMovieClick()">Scifi Movies</button>
+    <button type="button" class="btn btn-primary" (click)="onActionMovieClick()">Action Movies</button>
+  </div>
+</div>

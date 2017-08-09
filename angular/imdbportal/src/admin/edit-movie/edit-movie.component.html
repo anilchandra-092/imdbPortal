@@ -1,0 +1,138 @@
+
+<div class="row text-center" *ngIf="isEditable">
+
+    <div class="well">
+        Movie Details
+      <div class="navbar-right">
+
+        <span class="glyphicon glyphicon-remove"  (click)="onEditBack()"></span>&nbsp;&nbsp;
+      </div>
+
+    </div>
+
+    <form class="form-horizontal" #movieForm="ngForm" (ngSubmit)="onSubmit(movieForm.value)">
+      <div class="form-group">
+        <label class="control-label col-sm-2">Title:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" placeholder="Enter title" name="title" [(ngModel)]="title" ngModel>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2">Image:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" placeholder="Enter imagePath" name="imagePath" [(ngModel)]="imagePath" ngModel>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-2">Short Description:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" placeholder="Enter shortDescription" name="shortDescription" [(ngModel)]="shortDescription" ngModel>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2">Rating:</label>
+        <div class="col-sm-10">
+          <input type="number" min="0" max="10" class="form-control" placeholder="Enter Rating 0 to 10 out of 10 numbers onlty" name="avgRating"  [(ngModel)]="avgRating" ngModel>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2">Language:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" placeholder="Enter language" name="language" [(ngModel)]="language" ngModel>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2">Director:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" placeholder="Enter director" name="director" [(ngModel)]="director" ngModel>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2">Year:</label>
+        <div class="col-sm-10">
+          <input type="number" class="form-control" placeholder="Enter year" name="year" [(ngModel)]="year" ngModel>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2">Duration:</label>
+        <div class="col-sm-10">
+          <input type="time" class="form-control" placeholder="Enter duration in hours (2.3)" name="duration" [(ngModel)]="duration" ngModel>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2">DetailDescription:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" placeholder="Enter detailDescription" name="detailDescription" [(ngModel)]="detailDescription" ngModel>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2">StarCast:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" placeholder="Enter starCast" name="starCast" [(ngModel)]="starCast"  ngModel>
+        </div>
+      </div>
+
+      <div class="checkbox form-group">
+        <label><input type="checkbox" value="comedy" name="comedy"  [(ngModel)]="comedy" ngModel>Comedy</label>
+      </div>
+      <div class="checkbox form-group">
+        <label><input type="checkbox" value="scifi" name="scifi"  [(ngModel)]="scifi" ngModel>Scifi</label>
+      </div>
+      <div class="checkbox form-group">
+        <label><input type="checkbox" value="action" name="action"  [(ngModel)]="action" ngModel>Action</label>
+      </div>
+      <div class="checkbox form-group">
+        <label><input type="checkbox" value="romantic" name="romantic"  [(ngModel)]="romantic" ngModel>Romantic</label>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" [disabled]="!movieForm.valid" class="btn btn-primary form-control">Submit</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+<div class="row" *ngIf="!isEditable">
+<div class="well text-center">{{title}}
+  <div class="navbar-right">
+    <span class="glyphicon glyphicon-pencil"  (click)="onEdit()"></span>
+    <span class="glyphicon glyphicon-remove"  (click)="goBack()"></span>&nbsp;&nbsp;
+  </div>
+
+</div>
+<div class="row">
+  <div class="col-sm-6">
+    <img [src]="imagePath" class="img-thumbnail img-responsive" alt="Movie Image" width="70%" height="50%">
+  </div>
+
+  <div class="col-sm-6">
+  <ul class="list-group">
+    <li class="list-group-item"><span class="badge">Language</span>{{language}}</li>
+    <li class="list-group-item"><span class="badge">Year</span>{{year}}</li>
+    <li class="list-group-item"><span class="badge">Director</span>{{director}}</li>
+    <li class="list-group-item"><span class="badge">Duration</span>{{duration}}</li>
+    <li class="list-group-item"><span class="badge">StarCast</span>{{starCast}}</li>
+    <li class="list-group-item"><span class="badge">Rating</span>{{avgRating}}</li>
+    <li class="list-group-item"><span class="badge">Genres</span>
+      <span *ngIf="comedy">Comedy, </span>
+      <span *ngIf="romantic">Romantic,</span>
+      <span *ngIf="action">Action,</span>
+      <span *ngIf="scifi">Scifi</span>
+      <span *ngIf="!comedy && !romantic && !action && !scifi">No genres for this movie</span>
+    </li>
+  </ul>
+    </div >
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">Short Description Heading</div>
+  <div class="panel-body">{{shortDescription}}</div>
+</div>
+  <div class="panel panel-default">
+    <div class="panel-heading">Detailed Description Heading</div>
+    <div class="panel-body">{{detailDescription}}</div>
+  </div>
+
+</div>

@@ -1,0 +1,8 @@
+.adminDisabled{
+  pointer-events: none;
+  cursor: default;
+}
+.userDisabled {
+  pointer-events: none;
+  cursor: default;
+}

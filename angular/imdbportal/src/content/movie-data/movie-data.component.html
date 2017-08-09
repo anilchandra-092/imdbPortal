@@ -1,0 +1,42 @@
+
+<div class="well text-center">{{movieDetails.title}}
+  <div class="navbar-right" (click)="goBack()">
+    <span class="glyphicon glyphicon-remove"></span>
+  </div>
+</div>
+<div class="row">
+<div class="col-sm-12 col-sm-offset-3">
+  <img [src]="movieDetails.imagePath" class="img-thumbnail img-responsive" alt="Movie Image" width="50%" height="50%">
+</div>
+</div>
+<div class="row">
+  <ul class="list-group">
+    <li class="list-group-item"><span class="badge">shortDescription</span>{{movieDetails.shortDescription}}</li>
+    <li class="list-group-item"><span class="badge">Language</span>{{movieDetails.language}}</li>
+    <li class="list-group-item"><span class="badge">Year</span>{{movieDetails.year}}</li>
+    <li class="list-group-item"><span class="badge">Director</span>{{movieDetails.director}}</li>
+    <li class="list-group-item"><span class="badge">Duration</span>{{movieDetails.duration}}</li>
+    <li class="list-group-item"><span class="badge">StarCast</span>{{movieDetails.starCast}}</li>
+    <li class="list-group-item"><span class="badge">Rating</span>{{movieDetails.avgRating}}</li>
+  </ul>
+  <div *ngIf="userRole=='user'">
+    <div class="panel panel-info">
+      <div class="panel-heading">Rating Given by you</div>
+      <div class="panel-body">
+        <p *ngIf="userRate==-1">u r not given any rating for this movie till now</p>
+        <p>
+          <span *ngFor="let rate of rateArray;let i=index;" (click)="onStarClick(i)"  >
+            <i *ngIf=rate style="color: gold;font-size: xx-large;" class="glyphicon glyphicon-star"></i>
+             <i *ngIf=!rate style="font-size: xx-large" class="glyphicon glyphicon-star"></i>
+          </span>
+        </p>
+
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">Detailed Description Heading</div>
+    <div class="panel-body">{{movieDetails.detailDescription}}</div>
+  </div>
+</div>
+

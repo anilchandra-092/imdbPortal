@@ -1,0 +1,21 @@
+<p>{{errorMsg}}</p>
+<div class="row text-center">
+  <div class="col-sm-4" *ngFor="let movie of movies">
+    <div *ngIf="userRole=='admin'" class="navbar-right">
+      <span class="glyphicon glyphicon-trash" (click)="onTrahClick(movie.id)"></span><p>  </p>
+    </div>
+    <div class="panel panel-primary" (click)="onMovieClick(movie.id)">
+      <div class="panel-heading">
+        title: <strong>{{movie.title}}</strong>
+
+      </div>
+      <div class="panel-body">about: {{movie.shortDescription}}</div>
+      <div class="panel-footer">Rating :{{movie.avgRating}}</div>
+    </div>
+  </div>
+</div>
+<div class="row text-center">
+  <ul class="pagination">
+    <li *ngFor="let num of paginationArray; let i=index;" (click)="onPaginationClick(i+1)"><a>{{num}}</a></li>
+  </ul>
+</div>

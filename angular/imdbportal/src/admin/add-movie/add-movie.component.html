@@ -1,0 +1,98 @@
+<div class="row text-center">
+
+  <div class="alert alert-info text-center">
+    <div class="navbar-right" (click)="goBack()">
+      <span class="glyphicon glyphicon-remove"></span>
+    </div>
+    <h2>Movie Details Form</h2>
+  <div class="well text-center" *ngIf="isVisible">
+    {{userMessage}}
+    <p *ngIf="statusObj.status=='Success'">u can login here : <a routerLink="/login" routerLinkActive="active">Login</a></p>
+  </div>
+
+
+  <form class="form-horizontal" [formGroup]="movieForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label class="control-label col-sm-2">Title:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Enter title" formControlName="title">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2">Image:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Enter imagePath" formControlName="imagePath">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-2">Short Description:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Enter shortDescription" formControlName="shortDescription">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2">Rating:</label>
+      <div class="col-sm-10">
+        <input type="number" min="0" max="10" class="form-control" placeholder="Enter Rating 0 to 10 out of 10 numbers onlty" formControlName="avgRating">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2">Language:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Enter language" formControlName="language">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2">Director:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Enter director" formControlName="director">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2">Year:</label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control" placeholder="Enter year" formControlName="year">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2">Duration:</label>
+      <div class="col-sm-10">
+        <input type="time" class="form-control" placeholder="Enter duration in hours (2.3)" formControlName="duration">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2">DetailDescription:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Enter detailDescription" formControlName="detailDescription">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2">StarCast:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Enter starCast" formControlName="starCast">
+      </div>
+    </div>
+
+      <div class="checkbox form-group">
+        <label><input type="checkbox" value="comedy" formControlName="comedy">Comedy</label>
+      </div>
+      <div class="checkbox form-group">
+        <label><input type="checkbox" value="scifi" formControlName="scifi">Scifi</label>
+      </div>
+      <div class="checkbox form-group">
+        <label><input type="checkbox" value="action" formControlName="action">Action</label>
+      </div>
+      <div class="checkbox form-group">
+        <label><input type="checkbox" value="romantic" formControlName="romantic">Romantic</label>
+      </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" [disabled]="!movieForm.valid" class="btn btn-primary form-control">Submit</button>
+      </div>
+    </div>
+  </form>
+
+</div>
+</div>
