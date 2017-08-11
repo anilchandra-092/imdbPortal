@@ -51,11 +51,13 @@ public class MovieBO extends BaseBO{
 			list =mdao.getAllMoviesToAdmin(categeory);
 			result=new ArrayList<Movie>();
 			
-			if(start+end > list.size()){
-					result=list.subList(start, list.size());
-			}
-			else{
-				result=list.subList(start, end);
+			if(start<list.size()){
+				if(end > list.size()){
+						result=list.subList(start, list.size());
+				}
+				else{
+					result=list.subList(start, end);
+				}
 			}
 		}catch (DAOException e) {
 			throw new BOException("DAOException Occured");
@@ -182,6 +184,18 @@ public class MovieBO extends BaseBO{
 		} catch (Exception e) {
 			throw new BOException();
 		}
+	}
+	public int getLastMovieIndex() throws BOException{
+		int index=-1;
+		try{
+			mdao=new MovieDAO(getConnection());
+			index=mdao.getLastMovieIndex();
+		}catch (DAOException e) {
+			throw new BOException("DAOException Occured");
+		} catch (Exception e) {
+			throw new BOException();
+		}
+		return index;
 	}
 	
 }

@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alacriti.imdbportal.constants.Constants;
 import com.alacriti.imdbportal.exceptions.DAOException;
 import com.alacriti.imdbportal.models.Movie;
 
@@ -45,9 +46,9 @@ public class SearchDAO extends BaseDAO{
 		try{
 			list=new ArrayList<Movie>();
 			st=getConnection().createStatement();
-			rs=st.executeQuery("select * from anilkumarreddyg_imdb_movie_tbl where avg_rating>="+rate+";");
+			rs=st.executeQuery("select * from anilkumarreddyg_imdb_movie_tbl where avg_rating>="+rate+" order by weightage desc;");
 			while(rs.next()){
-				list.add(new Movie(rs.getInt("id"), rs.getString("title"),rs.getString("image_path"),rs.getString("short_desc"), rs.getFloat("avg_rating")));
+				list.add(new Movie(rs.getInt("id"), rs.getString("title"),Constants.IMAGE_BASE_URL+rs.getString("image_path"),rs.getString("short_desc"), rs.getFloat("avg_rating")));
 			} 
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -70,9 +71,9 @@ public class SearchDAO extends BaseDAO{
 		try{
 			list=new ArrayList<Movie>();
 			st=getConnection().createStatement();
-			rs=st.executeQuery("select * from anilkumarreddyg_imdb_movie_tbl where title like \"%"+movieName+"%\";");
+			rs=st.executeQuery("select * from anilkumarreddyg_imdb_movie_tbl where title like \"%"+movieName+"%\" order by weightage desc;");
 			while(rs.next()){
-				list.add(new Movie(rs.getInt("id"), rs.getString("title"),rs.getString("image_path"),rs.getString("short_desc"), rs.getFloat("avg_rating")));
+				list.add(new Movie(rs.getInt("id"), rs.getString("title"),Constants.IMAGE_BASE_URL+rs.getString("image_path"),rs.getString("short_desc"), rs.getFloat("avg_rating")));
 			} 
 		}catch(SQLException e){
 			e.printStackTrace();

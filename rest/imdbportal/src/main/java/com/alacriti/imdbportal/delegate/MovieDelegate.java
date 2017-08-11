@@ -241,4 +241,23 @@ public class MovieDelegate extends BaseDelegate{
 			endDBTransaction(connection, rollBack);
 		}
 	}
+	public int getLastMovieIndex() throws Exception{
+		Connection connection=null;
+		boolean rollBack = false;
+		int index=-1;
+		try{
+			connection = startDBTransaction();
+			setConnection(connection);
+			mbo=new MovieBO(connection);
+			index=mbo.getLastMovieIndex();
+			
+		}catch(Exception e){
+			rollBack=true;
+			e.printStackTrace();
+			throw e;
+		}finally{
+			endDBTransaction(connection, rollBack);
+		}
+		return index;
+	}
 }

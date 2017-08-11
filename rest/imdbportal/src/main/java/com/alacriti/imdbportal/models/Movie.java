@@ -15,6 +15,7 @@ public class Movie {
 	private String duration;
 	private String detailDescription;
 	private String starCast;
+	private float weightage;
 	private boolean comedy;
 	private boolean romantic;
 	private boolean scifi;
@@ -24,7 +25,7 @@ public class Movie {
 	
 	public Movie(int id,String title,String imagePath ,String shortDescription, float avgRating,
 			String language, String director, int year, String duration,
-			String detailDescription, String starCast) {
+			String detailDescription, String starCast,float weightage) {
 		
 		this(id,title,imagePath,shortDescription,avgRating);
 		this.language = language;
@@ -33,9 +34,10 @@ public class Movie {
 		this.duration = duration;
 		this.detailDescription = detailDescription;
 		this.starCast = starCast;
+		this.weightage=weightage;
 	}
 	
-	public Movie(String title,String imagePath ,String shortDescription, float avgRating,
+	/*public Movie(String title,String imagePath ,String shortDescription, float avgRating,
 			String language, String director, int year, String duration,
 			String detailDescription, String starCast,boolean comedy,boolean romantic,boolean scifi,boolean action) {
 		this(title,imagePath,shortDescription,avgRating,language,director,year,duration,detailDescription,starCast);
@@ -43,11 +45,11 @@ public class Movie {
 		this.romantic=romantic;
 		this.scifi = scifi;
 		this.action = action;
-	}
+	}*/
 	
 	public Movie(String title,String imagePath ,String shortDescription, float avgRating,
 			String language, String director, int year, String duration,
-			String detailDescription, String starCast) {
+			String detailDescription, String starCast,float weightage) {
 		
 		this.title = title;
 		this.imagePath=imagePath;
@@ -59,6 +61,7 @@ public class Movie {
 		this.duration = duration;
 		this.detailDescription = detailDescription;
 		this.starCast = starCast;
+		this.weightage=weightage;
 	}
 
 	public Movie(int id, String title,String imagePath,String shortDescription, float avgRating) {
@@ -197,6 +200,14 @@ public class Movie {
 		this.action = action;
 	}
 
+	public float getWeightage() {
+		return weightage;
+	}
+
+	public void setWeightage(float weightage) {
+		this.weightage = weightage;
+	}
+	
 	
 
 	

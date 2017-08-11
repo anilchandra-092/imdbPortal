@@ -75,11 +75,13 @@ public class SearchBO extends BaseBO{
 			}
 			
 			result=new ArrayList<Movie>();
-			if(start+end > list.size()){
-					result=list.subList(start, list.size());
-			}
-			else{
-				result=list.subList(start, end);
+			if(start<list.size()){
+				if(end > list.size()){
+						result=list.subList(start, list.size());
+				}
+				else{
+					result=list.subList(start, end);
+				}
 			}
 			
 		}catch (DAOException e) {

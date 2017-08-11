@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alacriti.imdbportal.constants.Constants;
 import com.alacriti.imdbportal.exceptions.DAOException;
 import com.alacriti.imdbportal.models.Movie;
 
@@ -19,6 +20,7 @@ public class MovieDAO extends BaseDAO {
 	public MovieDAO(Connection con) {
 		super(con);
 	}
+	
 	 
 	
 	public List<Movie> getAllMovies() throws DAOException{
@@ -28,9 +30,9 @@ public class MovieDAO extends BaseDAO {
 		try{
 			list=new ArrayList<Movie>();
 			st=getConnection().createStatement();
-			rs=st.executeQuery("select * from anilkumarreddyg_imdb_movie_tbl;");
+			rs=st.executeQuery("select * from anilkumarreddyg_imdb_movie_tbl order by weightage desc;");
 			while(rs.next()){
-				list.add(new Movie(rs.getInt("id"), rs.getString("title"),rs.getString("image_path"),rs.getString("short_desc"), rs.getFloat("avg_rating")));
+				list.add(new Movie(rs.getInt("id"), rs.getString("title"),Constants.IMAGE_BASE_URL+rs.getString("image_path"),rs.getString("short_desc"), rs.getFloat("avg_rating")));
 			} 
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -50,15 +52,18 @@ public class MovieDAO extends BaseDAO {
 		List<Movie> list=null;
 		Statement st=null;
 		ResultSet rs=null;
+		String sqlCmd;
 		try{
 			list=new ArrayList<Movie>();
 			st=getConnection().createStatement();
 			if(categeory.equals("all"))
-				rs=st.executeQuery("select * from anilkumarreddyg_imdb_movie_tbl;");
-			else
-				rs=st.executeQuery("select * from anilkumarreddyg_imdb_movie_tbl where id in  (select mid from anilkumarreddyg_imdb_movie_genres_tbl where gid=(select id from anilkumarreddyg_imdb_genres_tbl where name=\""+categeory+"\"))");
+				rs=st.executeQuery("select * from anilkumarreddyg_imdb_movie_tbl order by weightage desc;");
+			else{
+				sqlCmd="select m.* from anilkumarreddyg_imdb_movie_tbl as m,anilkumarreddyg_imdb_movie_genres_tbl as mg,anilkumarreddyg_imdb_genres_tbl as g where m.id=mg.mid and mg.gid=g.id and g.name=\""+categeory+"\" order by weightage desc;";
+				rs=st.executeQuery(sqlCmd);
+			}
 			while(rs.next()){
-				list.add(new Movie(rs.getInt("id"), rs.getString("title"),rs.getString("image_path"),rs.getString("short_desc"), rs.getFloat("avg_rating")));
+				list.add(new Movie(rs.getInt("id"), rs.getString("title"),Constants.IMAGE_BASE_URL+rs.getString("image_path"),rs.getString("short_desc"), rs.getFloat("avg_rating")));
 			} 
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -108,7 +113,19 @@ public class MovieDAO extends BaseDAO {
 			query="select * from anilkumarreddyg_imdb_movie_tbl where id="+id+";";
 			rs=st.executeQuery(query);
 			if(rs.next()){
-				movie=new Movie(rs.getInt("id"),rs.getString("title"),rs.getString("image_path"),rs.getString("short_desc"),rs.getFloat("avg_rating"),rs.getString("lang"),rs.getString("director"), rs.getInt("year"),rs.getString("duration"),rs.getString("detailed_desc"),rs.getString("starCast"));
+				movie=new Movie(
+						rs.getInt("id"),
+						rs.getString("title"),
+						Constants.IMAGE_BASE_URL+rs.getString("image_path"),
+						rs.getString("short_desc"),
+						rs.getFloat("avg_rating"),
+						rs.getString("lang"),
+						rs.getString("director"),
+						rs.getInt("year"),rs.getString("duration"),
+						rs.getString("detailed_desc"),
+						rs.getString("starCast"),
+						rs.getFloat("weightage")
+						);
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -150,7 +167,7 @@ public class MovieDAO extends BaseDAO {
 		String query;
 		ResultSet rs=null;
 		try{
-			query="select * from anilkumarreddyg_imdb_movie_genres_tbl where mid="+mid+" and gid=(select id from anilkumarreddyg_imdb_genres_tbl where name=\""+categeory+"\");";
+			query="select gid from anilkumarreddyg_imdb_movie_genres_tbl as mg,anilkumarreddyg_imdb_genres_tbl as g where mg.mid="+mid+" and mg.gid=g.id and g.name=\""+categeory+"\";";
 			st=getConnection().createStatement();
 			rs=st.executeQuery(query);
 			if(rs.next()){
@@ -204,6 +221,10 @@ public class MovieDAO extends BaseDAO {
 		Statement st=null;
 		ResultSet rs=null;
 		String query;
+		float weightedRating;
+		float avgRatingOfAllMovies;
+		float movieAvgRating;
+		int votesForThisMovie;
 		try{
 			st=getConnection().createStatement();
 			query="select * from anilkumarreddyg_imdb_rate_tbl where mid="+mid+" and uid="+uid;
@@ -217,6 +238,8 @@ public class MovieDAO extends BaseDAO {
 			}
 			query="update anilkumarreddyg_imdb_movie_tbl set avg_rating=(select avg(rating) from anilkumarreddyg_imdb_rate_tbl group by mid having mid="+mid+") where id="+mid+";";
 			st.execute(query);
+			setWeightedRating(mid,st);
+			
 		}catch(SQLException e){
 			e.printStackTrace();
 			throw new DAOException("SQL Exception Occured in Statement of set userRate");
@@ -229,6 +252,47 @@ public class MovieDAO extends BaseDAO {
 		}
 	}
 	
+	public void setWeightedRating(int mid,Statement st) throws DAOException{
+		ResultSet rs=null;
+		String query;
+		float weightedRating;
+		float avgRatingOfAllMovies=0;
+		float movieAvgRating=0;
+		int votesForThisMovie=0;
+		try{
+			query="select avg(weightage) as wholeAvg from anilkumarreddyg_imdb_movie_tbl";
+			rs=st.executeQuery(query);
+			if(rs.next()){
+				avgRatingOfAllMovies=rs.getFloat("wholeAvg");
+				rs.close();
+			}
+			query="select weightage from anilkumarreddyg_imdb_movie_tbl where id="+mid;
+			rs=st.executeQuery(query);
+			if(rs.next()){
+				movieAvgRating=rs.getFloat("weightage");
+				rs.close();
+			}
+			query="select count(*) as votes from anilkumarreddyg_imdb_rate_tbl where mid="+mid;
+			rs=st.executeQuery(query);
+			if(rs.next()){
+				votesForThisMovie=rs.getInt("votes");
+				rs.close();
+			}
+		
+			weightedRating=(movieAvgRating+avgRatingOfAllMovies)/((float)votesForThisMovie+Constants.MIN_VOTES_FOR_TOP);
+			query="update anilkumarreddyg_imdb_movie_tbl set weightage="+weightedRating+" where id="+mid;
+			st.execute(query);
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new DAOException("SQL Exception Occured in Statement of set userRate");
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new DAOException();
+		}
+		
+	}
+	
+	
 	public void addMovieToDB(Movie movie) throws DAOException{
 		PreparedStatement pst=null;
 		Statement st=null;
@@ -237,12 +301,11 @@ public class MovieDAO extends BaseDAO {
 		int i=0;
 		int mid;
 		try{
-			sqlCmd="insert into anilkumarreddyg_imdb_movie_tbl(title,image_path,short_desc,avg_rating,lang,director,year,duration,detailed_desc,starcast)values(?,?,?,?,?,?,?,?,?,?);";
+			sqlCmd="insert into anilkumarreddyg_imdb_movie_tbl(title,image_path,short_desc,lang,director,year,duration,detailed_desc,starcast)values(?,?,?,?,?,?,?,?,?);";
 			pst=getPreparedStatement(getConnection(), sqlCmd);
 			pst.setString(++i,movie.getTitle());
 			pst.setString(++i,movie.getImagePath());
 			pst.setString(++i,movie.getShortDescription());
-			pst.setFloat(++i,movie.getAvgRating());
 			pst.setString(++i,movie.getLanguage());
 			pst.setString(++i,movie.getDirector());
 			pst.setInt(++i, movie.getYear());
@@ -277,15 +340,13 @@ public class MovieDAO extends BaseDAO {
 	public void updateMovieInDB(int movieId,Movie movie) throws DAOException{
 		PreparedStatement pst=null;
 		Statement st=null;
-		ResultSet rs=null;
 		String sqlCmd;
 		int i=0;
-		int mid;
 		try{
-			sqlCmd="update anilkumarreddyg_imdb_movie_tbl set title=?,image_path=?,short_desc=?,avg_rating=?,lang=?,director=?,year=?,duration=?,detailed_desc=?,starcast=? where id=?";
+			sqlCmd="update anilkumarreddyg_imdb_movie_tbl set title=?,short_desc=?,avg_rating=?,lang=?,director=?,year=?,duration=?,detailed_desc=?,starcast=?,weightage=? where id=?";
 			pst=getPreparedStatement(getConnection(), sqlCmd);
 			pst.setString(++i,movie.getTitle());
-			pst.setString(++i,movie.getImagePath());
+	
 			pst.setString(++i,movie.getShortDescription());
 			pst.setFloat(++i,movie.getAvgRating());
 			pst.setString(++i,movie.getLanguage());
@@ -294,6 +355,7 @@ public class MovieDAO extends BaseDAO {
 			pst.setString(++i,movie.getDuration());
 			pst.setString(++i,movie.getDetailDescription());
 			pst.setString(++i,movie.getStarCast());
+			pst.setFloat(++i,movie.getWeightage());
 			pst.setInt(++i,movieId);
 			pst.executeUpdate();
 			st=getConnection().createStatement();
@@ -397,5 +459,28 @@ public class MovieDAO extends BaseDAO {
 		}finally{
 			close(st);
 		}
+	}
+	public int getLastMovieIndex() throws DAOException{
+		int index=-1;
+		Statement st=null;
+		ResultSet rs=null;
+		String query;
+		try{
+			st=getConnection().createStatement();
+			query="select max(id) from anilkumarreddyg_imdb_movie_tbl";
+			rs=st.executeQuery(query);
+			if(rs.next()){
+				index=rs.getInt("id");
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new DAOException("SQL Exception Occured selectStatement");
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new DAOException();
+		}finally{
+			close(st);
+		}
+		return index;
 	}
 }
