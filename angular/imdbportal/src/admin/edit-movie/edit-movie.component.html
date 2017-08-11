@@ -17,12 +17,10 @@
           <input type="text" class="form-control" placeholder="Enter title" name="title" [(ngModel)]="title" ngModel>
         </div>
       </div>
-      <div class="form-group">
-        <label class="control-label col-sm-2">Image:</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" placeholder="Enter imagePath" name="imagePath" [(ngModel)]="imagePath" ngModel>
-        </div>
+      <div class="col-sm-9 col-sm-offset-3">
+        <img [src]="imagePath" class="img-thumbnail img-responsive" alt="Movie Image" width="50%" height="50%">
       </div>
+
 
       <div class="form-group">
         <label class="control-label col-sm-2">Short Description:</label>
@@ -33,7 +31,13 @@
       <div class="form-group">
         <label class="control-label col-sm-2">Rating:</label>
         <div class="col-sm-10">
-          <input type="number" min="0" max="10" class="form-control" placeholder="Enter Rating 0 to 10 out of 10 numbers onlty" name="avgRating"  [(ngModel)]="avgRating" ngModel>
+          <input type="number" min="0" max="10" class="form-control" placeholder="Enter Rating 0 to 10 out of 10 numbers onlty" name="avgRating"  [(ngModel)]="avgRating" ngModel disabled>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2">Weightage:</label>
+        <div class="col-sm-10">
+          <input type="number" min="0" max="10" class="form-control" placeholder="Enter Rating 0 to 10 out of 10 numbers onlty" name="weightage"  [(ngModel)]="weightage" ngModel disabled>
         </div>
       </div>
       <div class="form-group">
@@ -105,7 +109,7 @@
 </div>
 <div class="row">
   <div class="col-sm-6">
-    <img [src]="imagePath" class="img-thumbnail img-responsive" alt="Movie Image" width="70%" height="50%">
+    <img [src]="imagePath" class="img-thumbnail img-responsive" alt="Movie Image" width="40%" height="40%">
   </div>
 
   <div class="col-sm-6">
@@ -116,6 +120,7 @@
     <li class="list-group-item"><span class="badge">Duration</span>{{duration}}</li>
     <li class="list-group-item"><span class="badge">StarCast</span>{{starCast}}</li>
     <li class="list-group-item"><span class="badge">Rating</span>{{avgRating}}</li>
+    <li class="list-group-item"><span class="badge">Weightage</span>{{weightage}}</li>
     <li class="list-group-item"><span class="badge">Genres</span>
       <span *ngIf="comedy">Comedy, </span>
       <span *ngIf="romantic">Romantic,</span>

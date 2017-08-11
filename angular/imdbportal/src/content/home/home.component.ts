@@ -16,7 +16,8 @@ export class HomeComponent {
   pageid:number;
   start:number=0;
   end:number=0;
-
+  //public imgsource='/../../assets/images/movie.jpg';
+  public imgsource="http://localhost:8080/imdbportal/images/20170810063742.jpg";
   constructor(
     private _contentServiceComponent:ContentServiceComponent,
     private router:Router,
@@ -25,28 +26,42 @@ export class HomeComponent {
   ){}
 
   ngOnInit(){
-      this._contentServiceComponent.getCountOfMovies().subscribe(
-        moviesLengthObj=>this.mcount=moviesLengthObj,
-        errormsg=>this.errorMsg=errormsg+"ngoninit",
-        ()=>{
-          this.paginationArray=this._contentServiceComponent.getPaginationArray(this.mcount.count);
-          console.log(this.mcount.count);
-          this.loadMovies();
-        }
-      );
+      this.loadBasicInformation();
+      this.getMoviesCount();
+  }
+  loadBasicInformation(){
 
-      this.activatedRoute.params.subscribe((params:Params)=>{
-        console.log(params['pageid']);
-        this.pageid=parseInt(params['pageid']);
-        if(this.pageid >= 1){
-          this.loadMovies();
-        }
-      });
-
-      if(this.activatedRoute.snapshot.data['pageid']==1){
-        this.pageid=this.activatedRoute.snapshot.data['pageid'];
+    this.activatedRoute.params.subscribe((params:Params)=>{
+      console.log(params['pageid']);
+      this.pageid=parseInt(params['pageid']);
+      if(this.pageid >= 1){
+        this.loadMovies();
       }
+    });
 
+    if(this.activatedRoute.snapshot.data['pageid']==1){
+      this.pageid=this.activatedRoute.snapshot.data['pageid'];
+    }
+  }
+
+  getMoviesCount(){
+    this._contentServiceComponent.getCountOfMovies()
+      .subscribe(
+        moviesLengthObj=>this.mcount=moviesLengthObj,
+        errormsg=>this.errorMsg=errormsg,
+        ()=>{ this.getCountOfMoviesCallBackFunction(); }
+    ) ;
+  }
+
+  getCountOfMoviesCallBackFunction(){
+    if(this.mcount.count != 0){
+      this.errorMsg="";
+     this.paginationArray=this._contentServiceComponent.getPaginationArray(this.mcount.count);
+     this.loadMovies();
+    }
+    else{
+      this.errorMsg="no Movies in Database";
+    }
   }
 
   loadMovies(){

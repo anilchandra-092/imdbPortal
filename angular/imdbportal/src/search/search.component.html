@@ -9,7 +9,10 @@
         title: <strong>{{movie.title}}</strong>
 
       </div>
-      <div class="panel-body">about: {{movie.shortDescription}}</div>
+      <div class="panel-body">
+        <img [src]="movie.imagePath" width="50%" height="50%">
+        <div>about: {{movie.shortDescription}}</div>
+      </div>
       <div class="panel-footer">Rating :{{movie.avgRating}}</div>
     </div>
   </div>

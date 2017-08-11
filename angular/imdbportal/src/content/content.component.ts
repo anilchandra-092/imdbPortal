@@ -38,7 +38,7 @@ export class ContentComponent {
           "searchKey":this.searchForm.value.searchKey,
           "searchOption":this.searchForm.value.searchOption
         }
-      ]);
+    ]);
   }
 
 }

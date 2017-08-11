@@ -2,6 +2,7 @@ import {Component} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ContentServiceComponent} from "../../content/content.service.component";
 import {ActivatedRoute, Params, Router} from "@angular/router";
+import {Http, RequestOptions, Response,Headers} from "@angular/http";
 
 @Component({
   selector:'add-movie-comp',
@@ -16,20 +17,23 @@ export class AddMovieComponent{
   userMessage;
   pid;
   categeory;
+  file: File;
+  fileType;
 
   constructor(
     private _formBuilder:FormBuilder,
     private contentService:ContentServiceComponent,
     private router:Router,
-    private activatedRoute:ActivatedRoute
+    private activatedRoute:ActivatedRoute,
+    private _http:Http
+
   ){}
 
   ngOnInit(){
     this.movieForm=this._formBuilder.group({
       title:[null,[Validators.required]],
-      imagePath:[],
+      imageFile:[],
       shortDescription:[null,[Validators.required]],
-      avgRating:[null],
       language:[null,[Validators.required]],
       director:[null,[Validators.required]],
       year:[],
@@ -49,6 +53,15 @@ export class AddMovieComponent{
       });
   }
 
+  fileChange(event) {
+    let fileList: FileList = event.target.files;
+    if(fileList.length > 0) {
+      this.file= fileList[0];
+      var splitVals=this.file.name.split(".");
+      this.fileType=splitVals[splitVals.length-1];
+      }
+  }
+
   onSubmit(){
 
     if(!this.movieForm.value.comedy){
@@ -64,24 +77,52 @@ export class AddMovieComponent{
     if(!this.movieForm.value.romantic){
       this.movieForm.value.romantic=false;
     }
+    this.movieForm.value.imageFile=this.file;
     console.log(this.movieForm.value);
-    this.contentService.addMovie(this.movieForm.value)
+
+
+    let formData:FormData = new FormData();
+    formData.append('imageFile', this.file);
+    formData.append('fileType', this.fileType);
+    formData.append('title',this.movieForm.value.title);
+    formData.append("shortDescription",this.movieForm.value.shortDescription);
+    formData.append("language",this.movieForm.value.language);
+    formData.append("director",this.movieForm.value.director);
+    formData.append("year",this.movieForm.value.year);
+    formData.append("duration",this.movieForm.value.duration);
+    formData.append("detailDescription",this.movieForm.value.detailDescription);
+    formData.append("starCast",this.movieForm.value.starCast);
+    formData.append("comedy",this.movieForm.value.comedy);
+    formData.append("romantic",this.movieForm.value.romantic);
+    formData.append("scifi",this.movieForm.value.scifi);
+    formData.append("action",this.movieForm.value.action);
+
+
+    let headers = new Headers();
+    headers.append('Content-Type','false' );
+    headers.append(' processData', 'false');
+    let options = new RequestOptions({ headers: headers });
+
+    this._http.post("http://localhost:8080/imdbportal/file/uploadMovieDetails",formData,headers).map((response:Response)=>response.json())
       .subscribe(
         status=>this.statusObj=status,
         error=>this.errorMsg=error,
-        ()=>{
-          if(this.statusObj.status=="Fail"){
-            this.userMessage="movie is not added to the database";
-
-          }
-          else{
-            this.userMessage="Movie added Successfully";
-            this.movieForm.reset();
-          }
-          this.isVisible=true;
-        }
+        ()=>{this.callBackFunction()}
       );
   }
+
+  callBackFunction(){
+    if(this.statusObj.status=="Fail"){
+      this.userMessage="movie is not added to the database";
+
+    }
+    else{
+      this.userMessage="Movie added Successfully";
+      this.movieForm.reset();
+    }
+    this.isVisible=true;
+  }
+
   goBack(){
     var path="../admin/"+this.pid;
     this.router.navigate([path,{categeory:this.categeory}]);

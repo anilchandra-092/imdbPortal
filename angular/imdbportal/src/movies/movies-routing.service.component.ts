@@ -9,6 +9,7 @@ export class MoviesRoutingServiceComponent{
   paginationArray=[];
   errorMsg;
 
+
   constructor(
     private _contentServiceComponent:ContentServiceComponent,
     private router:Router,

@@ -74,7 +74,7 @@ export class AdminComponent {
     }
     else{
       this.start=(this.pageid-1)*9;
-      this.end=this.pageid*9-1;
+      this.end=this.pageid*9;
     }
     this.movies=[];
 

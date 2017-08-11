@@ -29,6 +29,7 @@ export class EditMovieComponent{
   duration;
   detailDescription;
   starCast;
+  weightage;
   comedy;
   romantic;
   scifi;
@@ -88,6 +89,7 @@ export class EditMovieComponent{
     this.duration = this.movieDetails.duration;
     this.detailDescription = this.movieDetails.detailDescription;
     this.starCast = this.movieDetails.starCast;
+    this.weightage=this.movieDetails.weightage;
     this.comedy = this.movieDetails.comedy;
     this.romantic = this.movieDetails.romantic;
     this.scifi = this.movieDetails.scifi;
@@ -97,6 +99,8 @@ export class EditMovieComponent{
 
   onSubmit(movieFormValue){
     console.log(movieFormValue);
+    movieFormValue.avgRating = this.movieDetails.avgRating;
+    movieFormValue.weightage = this.movieDetails.weightage;
     this.contentService.updateMovie(this.mid,movieFormValue).subscribe(
       data=>{},
       error=>{},

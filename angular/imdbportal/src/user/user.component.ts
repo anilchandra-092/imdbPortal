@@ -17,6 +17,7 @@ export class UserComponent{
   pageid:number;
   start:number=0;
   end:number=0;
+  public imgsource='/../assets/images/movie.jpg';
   constructor(
     private _contentServiceComponent:ContentServiceComponent,
     private router:Router,
@@ -36,11 +37,18 @@ export class UserComponent{
       .subscribe(
         moviesLengthObj=>this.mcount=moviesLengthObj,
         errormsg=>this.errorMsg=errormsg+"ngoninit",
-        ()=>{
-          this.paginationArray=this._contentServiceComponent.getPaginationArray(this.mcount.count);
-          this.loadMovies();
-        }
+        ()=>{ this.getCountOfMoviesCallBackFunction(); }
       );
+  }
+
+  getCountOfMoviesCallBackFunction(){
+    if(this.mcount.count != 0){
+      this.errorMsg="";
+      this.paginationArray=this._contentServiceComponent.getPaginationArray(this.mcount.count);
+      this.loadMovies();
+    }else{
+      this.errorMsg="no Movies in Database";
+    }
   }
 
   loadPageId(){
@@ -67,7 +75,7 @@ export class UserComponent{
     }
     else{
       this.start=(this.pageid-1)*9;
-      this.end=this.pageid*9-1;
+      this.end=this.pageid*9;
     }
 
     this._contentServiceComponent.getMovies(this.start,this.end).

@@ -4,7 +4,10 @@
   <div class="col-sm-4" *ngFor="let movie of movies" (click)="onMovieClick(movie.id)">
     <div class="panel panel-primary">
       <div class="panel-heading">title: <strong>{{movie.title}}</strong></div>
-      <div class="panel-body">about: {{movie.shortDescription}}</div>
+      <div class="panel-body">
+        <img [src]="movie.imagePath" width="60px" height="60px">
+        <div>about: {{movie.shortDescription}}</div>
+      </div>
       <div class="panel-footer">Rating :{{movie.avgRating}}</div>
     </div>
   </div>

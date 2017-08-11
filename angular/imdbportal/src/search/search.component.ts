@@ -51,13 +51,20 @@ export class SearchComponent{
       .subscribe(
         moviesLengthObj=>this.mcount=moviesLengthObj,
         errormsg=>this.errorMsg=errormsg+"ngoninit",
-        ()=>{
-          this.paginationArray=this._contentServiceComponent.getPaginationArray(this.mcount.count);
-          this.loadMovies();
-        }
+        ()=>{ this.getCountOfMoviesInSearchCallbachFunction(); }
     );
   }
 
+  getCountOfMoviesInSearchCallbachFunction(){
+    if(this.mcount.count){
+      this.errorMsg="";
+      this.paginationArray=this._contentServiceComponent.getPaginationArray(this.mcount.count);
+      this.loadMovies();
+    }
+    else{
+      this.errorMsg="no search result found";
+    }
+  }
   loadMovies(){
     if(this.pageid==1){
       this.start=0;
@@ -65,7 +72,7 @@ export class SearchComponent{
     }
     else{
       this.start=(this.pageid-1)*9;
-      this.end=this.pageid*9-1;
+      this.end=this.pageid*9;
     }
     this.movies=[];
 

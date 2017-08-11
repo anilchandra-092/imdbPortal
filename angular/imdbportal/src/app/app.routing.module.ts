@@ -9,6 +9,8 @@ import {UserComponent} from "../user/user.component";
 import {AddMovieComponent} from "../admin/add-movie/add-movie.component";
 import {SearchComponent} from "../search/search.component";
 import {EditMovieComponent} from "../admin/edit-movie/edit-movie.component";
+import {AdminAuthguardService} from "./admin-authguard.service";
+import {UserAuthguardService} from "./user-authguard.service";
 
 
 const routes:Routes=[
@@ -25,16 +27,17 @@ const routes:Routes=[
     {path:"editMovie",component:EditMovieComponent},
     {path:"addMovie",component:AddMovieComponent},
     {path:":pageid",component:AdminComponent},
-  ]},
-  {path:"signup",component:SignupComponent},
+  ], canActivate: [AdminAuthguardService]},
+
   {path:"user",children:[
     {path:"",component:UserComponent,data:{  pageid:1 }},
     {path:":pageid",children:[
       {path:"",component:UserComponent},
       {path:":mid",component:MovieDataComponent}
     ]}
-  ]},
+  ], canActivate: [UserAuthguardService]},
   {path:"login",component:LoginComponent},
+  {path:"signup",component:SignupComponent},
   {path:"search",component:SearchComponent},
   {path:"search/:mid",component:MovieDataComponent}
 ];

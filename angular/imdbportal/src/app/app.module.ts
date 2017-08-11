@@ -6,6 +6,8 @@ import {AppRoutingModule, routingComponents} from "./app.routing.module";
 import {ContentServiceComponent} from "../content/content.service.component";
 import {ContentModule} from "../content/content.module";
 import {AuthentificationServiceComponent} from "./authentification.service.component";
+import {AdminAuthguardService} from "./admin-authguard.service";
+import {UserAuthguardService} from "./user-authguard.service";
 
 
 
@@ -19,7 +21,12 @@ import {AuthentificationServiceComponent} from "./authentification.service.compo
     AppRoutingModule,
     ContentModule
   ],
-  providers: [ContentServiceComponent,AuthentificationServiceComponent],
+  providers: [
+    ContentServiceComponent,
+    AuthentificationServiceComponent,
+    AdminAuthguardService,
+    UserAuthguardService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
