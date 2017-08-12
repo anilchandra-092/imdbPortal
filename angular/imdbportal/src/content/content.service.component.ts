@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import{Http,Response} from "@angular/http";
+import{Http,Response,Headers} from "@angular/http";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Observable} from "rxjs/Observable";
@@ -19,16 +19,51 @@ export class ContentServiceComponent {
     return Observable.throw(error || "json url not found");
   }
 
+  checkForSession() {
+    console.log("checkForSession");
+    let url = this.baseUrl+'/users/checkSession';
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    return this._http.get(url, { headers: headers, withCredentials: true })
+      .map((response: Response) => response.json())
+      .catch(this._errorHandler);
+  }
+
+  checkForSessionWithUserRole(role) {
+    console.log("checkForSessionWithUserRole:"+role);
+    let url = this.baseUrl+'/users/checkSessionForUser/'+role;
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    return this._http.get(url, { headers: headers, withCredentials: true })
+      .map((response: Response) => response.json())
+      .catch(this._errorHandler);
+  }
+
+
   deleteMovie(mid){
     var url=this._url1+"/"+mid;
     event.preventDefault();
-    return this._http.delete(url).map((response: Response) => response.json()).catch(this._errorHandler);
+    return this._http.delete(url,{withCredentials: true}).map((response: Response) => response.json()).catch(this._errorHandler);
   }
 
   getMovies(start,end) {
    var url=this._url1+"?start="+start+"&end="+end;
    console.log(url);
     return this.getRequest(url);
+  }
+
+  getNewUsers() {
+    var url=this.baseUrl+"/users/newUsers";
+    console.log(url);
+    return this.getRequest(url);
+  }
+  changeStatus(id,status){
+    var url=this.baseUrl+"/users/"+id+"?status="+status;
+    console.log(url);
+    return this._http.put(url,{}).map((response: Response) => response.json()).catch(this._errorHandler);
   }
 
   getMovieToAdmin(movieId){
@@ -86,7 +121,7 @@ export class ContentServiceComponent {
     var url=this._url1+"/setRate?movieid="+movieId+"&userid="+userId+"&rate="+rate;
     var body={};
     event.preventDefault();
-    return this._http.post(url,body).map((response: Response) => {}).catch(this._errorHandler);
+    return this._http.post(url,body,{withCredentials: true}).map((response: Response) => {}).catch(this._errorHandler);
   }
 
   addMovie(movieDetails){
@@ -96,10 +131,23 @@ export class ContentServiceComponent {
       .map((response: Response) => response.json())
       .catch(this._errorHandler);
   }
+
   updateMovie(movieId,movieData){
     var url=this._url1+"/updateMovie?movieId="+movieId;
-    return this._http.put(url,movieData).map((response: Response) => response.json()).catch(this._errorHandler);
+    return this._http.put(url,movieData,{withCredentials: true}).map((response: Response) => response.json()).catch(this._errorHandler);
   }
+
+  logout(){
+    let url = this.baseUrl+'/users/logout';
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    return this._http.get(url, { headers: headers, withCredentials: true })
+      .map((response: Response) => response.json())
+      .catch(this._errorHandler);
+
+  }
+
   getPaginationArray(CountOfMovies){
 
     var paginationArray=[];

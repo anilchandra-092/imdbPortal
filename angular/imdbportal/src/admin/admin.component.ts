@@ -94,6 +94,11 @@ export class AdminComponent {
   onAddMovieClick(){
     this.router.navigate(["/admin/addMovie",{pid:this.pageid,categeory:this.categeory}]);
   }
+  onApproveUsersClick(){
+    console.log("users Approval");
+    this.router.navigate(["/admin/usersApprove",{pid:this.pageid,categeory:this.categeory}]);
+  }
+
   onAllMovieClick(){ this.setCategeory("all");}
 
   onComedyMovieClick(){ this.setCategeory("comedy"); }
@@ -103,6 +108,8 @@ export class AdminComponent {
   onScifiMovieClick(){ this.setCategeory("scifi"); }
 
   onActionMovieClick(){ this.setCategeory("action"); }
+
+
 
   setCategeory(categeory){
     console.log("on",categeory,"Movie Click");

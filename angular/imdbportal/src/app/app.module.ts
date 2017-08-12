@@ -8,6 +8,7 @@ import {ContentModule} from "../content/content.module";
 import {AuthentificationServiceComponent} from "./authentification.service.component";
 import {AdminAuthguardService} from "./admin-authguard.service";
 import {UserAuthguardService} from "./user-authguard.service";
+import {EventEmmiterService} from "../content/event-emmiter.service";
 
 
 
@@ -25,7 +26,8 @@ import {UserAuthguardService} from "./user-authguard.service";
     ContentServiceComponent,
     AuthentificationServiceComponent,
     AdminAuthguardService,
-    UserAuthguardService
+    UserAuthguardService,
+    EventEmmiterService
   ],
   bootstrap: [AppComponent]
 })

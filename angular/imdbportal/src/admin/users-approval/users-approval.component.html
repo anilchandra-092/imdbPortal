@@ -1,0 +1,29 @@
+<div class="row">
+  <div *ngIf="!isNewUsersExists"><h2>There are no new Users</h2></div>
+
+  <div class="container" *ngIf="isNewUsersExists">
+    <h2>UsersApproval<br/></h2>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>User Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Accept</th>
+        <th>Remove</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{user.uname}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.role}}</td>
+        <td><button type="button" class="btn btn-default btn-xs" (click)="onAcceptClick(user.id)">Accept</button></td>
+        <td><button type="button" class="btn btn-danger btn-xs" (click)="onRemoveClick(user.id)">Remove</button></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+</div>

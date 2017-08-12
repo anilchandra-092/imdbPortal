@@ -16,8 +16,7 @@ export class HomeComponent {
   pageid:number;
   start:number=0;
   end:number=0;
-  //public imgsource='/../../assets/images/movie.jpg';
-  public imgsource="http://localhost:8080/imdbportal/images/20170810063742.jpg";
+
   constructor(
     private _contentServiceComponent:ContentServiceComponent,
     private router:Router,

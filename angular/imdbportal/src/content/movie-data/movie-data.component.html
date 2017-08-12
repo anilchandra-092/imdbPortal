@@ -1,15 +1,15 @@
 
-<div class="well text-center">{{movieDetails.title}}
+<div class="well text-center"><strong>{{movieDetails.title}}</strong>
   <div class="navbar-right" (click)="goBack()">
     <span class="glyphicon glyphicon-remove"></span>
   </div>
 </div>
 <div class="row">
-<div class="col-sm-12 col-sm-offset-3">
+<div class="col-sm-6">
   <img [src]="movieDetails.imagePath" class="img-thumbnail img-responsive" alt="Movie Image" width="50%" height="50%">
 </div>
-</div>
-<div class="row">
+
+<div class="col-sm-6">
   <ul class="list-group">
     <li class="list-group-item"><span class="badge">shortDescription</span>{{movieDetails.shortDescription}}</li>
     <li class="list-group-item"><span class="badge">Language</span>{{movieDetails.language}}</li>
@@ -18,7 +18,11 @@
     <li class="list-group-item"><span class="badge">Duration</span>{{movieDetails.duration}}</li>
     <li class="list-group-item"><span class="badge">StarCast</span>{{movieDetails.starCast}}</li>
     <li class="list-group-item"><span class="badge">Rating</span>{{movieDetails.avgRating}}</li>
+    <li class="list-group-item"><span class="badge">Weightage</span>{{movieDetails.weightage}}</li>
   </ul>
+</div>
+</div>
+<div class="row">
   <div *ngIf="userRole=='user'">
     <div class="panel panel-info">
       <div class="panel-heading">Rating Given by you</div>

@@ -3,6 +3,8 @@ import {AuthentificationServiceComponent} from "../app/authentification.service.
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Http} from "@angular/http";
 import {Router} from "@angular/router";
+import {EventEmmiterService} from "./event-emmiter.service";
+import {ContentServiceComponent} from "./content.service.component";
 
 @Component({
   selector: 'content-root',
@@ -19,7 +21,9 @@ export class ContentComponent {
     private authService:AuthentificationServiceComponent,
     private _formBuilder:FormBuilder,
     private _http:Http,
-    private router:Router
+    private router:Router,
+    private contentService:ContentServiceComponent,
+    private eventEmmitterService:EventEmmiterService
   ){}
 
   ngOnInit(){
@@ -27,7 +31,7 @@ export class ContentComponent {
       searchKey:[],
       searchOption:["movie"]
     });
-
+    this.eventEmmitterService.getLoginStatus().subscribe(Login=>this.isLogoutDisabled=!Login.status);
   }
 
   onSearchSubmit(){
@@ -39,6 +43,13 @@ export class ContentComponent {
           "searchOption":this.searchForm.value.searchOption
         }
     ]);
+  }
+
+  onLogOutClick(){
+    this.eventEmmitterService.changeLoginStatus(false);
+    this.authService.delAuthObject();
+    this.contentService.logout().subscribe(data=>{console.log("isLoggedOut:",data)});
+    this.router.navigate(["/home"]);
   }
 
 }

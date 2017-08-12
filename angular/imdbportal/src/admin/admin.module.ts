@@ -6,6 +6,7 @@ import {AdminComponent} from "./admin.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AddMovieComponent} from "./add-movie/add-movie.component";
 import {EditMovieComponent} from "./edit-movie/edit-movie.component";
+import {UsersApprovalComponent} from "./users-approval/users-approval.component";
 
 
 
@@ -14,6 +15,7 @@ import {EditMovieComponent} from "./edit-movie/edit-movie.component";
   declarations: [
     AddMovieComponent,
     EditMovieComponent,
+    UsersApprovalComponent,
     AdminComponent,
 
   ],

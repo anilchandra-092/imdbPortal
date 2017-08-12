@@ -11,10 +11,14 @@ import {SearchComponent} from "../search/search.component";
 import {EditMovieComponent} from "../admin/edit-movie/edit-movie.component";
 import {AdminAuthguardService} from "./admin-authguard.service";
 import {UserAuthguardService} from "./user-authguard.service";
+import {UsersApprovalComponent} from "../admin/users-approval/users-approval.component";
 
 
 const routes:Routes=[
+
   {path:'',redirectTo:"/home",pathMatch:"full"},
+
+
   {path:"home",children:[
     {path:"",component:HomeComponent,data:{  pageid:1 }},
     {path:":pageid",children:[
@@ -22,12 +26,7 @@ const routes:Routes=[
       {path:":mid",component:MovieDataComponent}
     ]}
   ]},
-  {path:"admin",children:[
-    {path:"",component:AdminComponent,data:{  pageid:1,categeory:"all" }},
-    {path:"editMovie",component:EditMovieComponent},
-    {path:"addMovie",component:AddMovieComponent},
-    {path:":pageid",component:AdminComponent},
-  ], canActivate: [AdminAuthguardService]},
+
 
   {path:"user",children:[
     {path:"",component:UserComponent,data:{  pageid:1 }},
@@ -36,11 +35,26 @@ const routes:Routes=[
       {path:":mid",component:MovieDataComponent}
     ]}
   ], canActivate: [UserAuthguardService]},
+
+
+
+  {path:"admin",children:[
+    {path:"",component:AdminComponent,data:{  pageid:1,categeory:"all" }},
+    {path:"editMovie",component:EditMovieComponent},
+    {path:"usersApprove",component:UsersApprovalComponent},
+    {path:"addMovie",component:AddMovieComponent},
+    {path:":pageid",component:AdminComponent},
+  ], canActivate: [AdminAuthguardService]},
+
+
+
+
   {path:"login",component:LoginComponent},
   {path:"signup",component:SignupComponent},
   {path:"search",component:SearchComponent},
   {path:"search/:mid",component:MovieDataComponent}
-];
+
+  ];
 
 @NgModule({
   imports:[RouterModule.forRoot(routes)],
