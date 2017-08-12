@@ -221,10 +221,6 @@ public class MovieDAO extends BaseDAO {
 		Statement st=null;
 		ResultSet rs=null;
 		String query;
-		float weightedRating;
-		float avgRatingOfAllMovies;
-		float movieAvgRating;
-		int votesForThisMovie;
 		try{
 			st=getConnection().createStatement();
 			query="select * from anilkumarreddyg_imdb_rate_tbl where mid="+mid+" and uid="+uid;
@@ -460,6 +456,8 @@ public class MovieDAO extends BaseDAO {
 			close(st);
 		}
 	}
+	
+	
 	public int getLastMovieIndex() throws DAOException{
 		int index=-1;
 		Statement st=null;

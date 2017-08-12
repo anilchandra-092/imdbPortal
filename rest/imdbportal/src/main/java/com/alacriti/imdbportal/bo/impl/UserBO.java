@@ -1,11 +1,11 @@
 package com.alacriti.imdbportal.bo.impl;
 
 import java.sql.Connection;
+import java.util.List;
 
 import com.alacriti.imdbportal.dao.impl.UserDAO;
 import com.alacriti.imdbportal.exceptions.BOException;
 import com.alacriti.imdbportal.exceptions.DAOException;
-import com.alacriti.imdbportal.exceptions.FailedToInsertDataException;
 import com.alacriti.imdbportal.models.User;
 
 public class UserBO extends BaseBO {
@@ -43,4 +43,30 @@ public class UserBO extends BaseBO {
 		}
 		return usr;
 	}
+	public List<User> getNewUsers() throws BOException{
+		List<User> list=null;
+		try{
+			userdao=new UserDAO(getConnection());
+			list=userdao.getNewUsers();
+		}catch (DAOException e) {
+			throw new BOException("DAOException Occured");
+		} catch (Exception e) {
+			throw new BOException();
+		}
+		return list;
+	}
+	
+	public  boolean updateUserStatus(int userId,String status) throws BOException{
+		boolean result=false;
+		try{
+			userdao=new UserDAO(getConnection());
+			result=userdao.updateUserStatus(userId,status);
+		}catch (DAOException e) {
+			throw new BOException("DAOException Occured");
+		} catch (Exception e) {
+			throw new BOException();
+		}
+		return result;
+	}
+	
 }

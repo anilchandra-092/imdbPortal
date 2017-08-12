@@ -3,10 +3,7 @@ package com.alacriti.imdbportal.delegate;
 import java.sql.Connection;
 import java.util.List;
 
-import javax.ws.rs.QueryParam;
-
 import com.alacriti.imdbportal.bo.impl.SearchBO;
-import com.alacriti.imdbportal.datasource.MySqlDataSource;
 import com.alacriti.imdbportal.exceptions.ValidateException;
 import com.alacriti.imdbportal.models.Movie;
 import com.alacriti.imdbportal.models.SearchModel;

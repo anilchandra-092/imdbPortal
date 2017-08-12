@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.util.List;
 
 import com.alacriti.imdbportal.bo.impl.MovieBO;
-import com.alacriti.imdbportal.datasource.MySqlDataSource;
 import com.alacriti.imdbportal.exceptions.ValidateException;
 import com.alacriti.imdbportal.models.Movie;
 

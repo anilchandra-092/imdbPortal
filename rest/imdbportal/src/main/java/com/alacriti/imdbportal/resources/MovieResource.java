@@ -72,7 +72,19 @@ public class MovieResource {
 		return movie;
 	}
 	
-	
+	@GET
+	@Path("/{movieid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Movie getMovie(@PathParam("movieid") int id){
+		Movie movie=null;
+		try{
+		movieDelegate=new MovieDelegate();
+		movie=movieDelegate.getMovieDetailsFully(id);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return movie;
+	}
 	
 	
 	@Path("count")
@@ -108,19 +120,7 @@ public class MovieResource {
 	}
 	
 	
-	@GET
-	@Path("/{movieid}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Movie getMovie(@PathParam("movieid") int id){
-		Movie movie=null;
-		try{
-		movieDelegate=new MovieDelegate();
-		movie=movieDelegate.getMovie(id);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return movie;
-	}
+
 	@GET
 	@Path("/{movieid}/{userid}")
 	@Produces(MediaType.APPLICATION_JSON)
