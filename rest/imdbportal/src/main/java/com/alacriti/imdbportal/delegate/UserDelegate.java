@@ -47,7 +47,7 @@ public class UserDelegate extends BaseDelegate{
 			}
 			else{
 				rollBack=true;
-				obj=createJsonObject("Fail","User data Validation Fail");
+				obj=createJsonObject("Fail","Please Insert the Valid Data");
 			}
 		}catch(Exception e){
 			rollBack=true;

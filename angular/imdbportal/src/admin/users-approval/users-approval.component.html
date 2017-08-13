@@ -1,8 +1,11 @@
 <div class="row">
+  <ul class="pager">
+    <li class="next"><a (click)="goBack()"><button class="btn btn-primary">Back</button></a></li>
+  </ul>
   <div *ngIf="!isNewUsersExists"><h2>There are no new Users</h2></div>
 
   <div class="container" *ngIf="isNewUsersExists">
-    <h2>UsersApproval<br/></h2>
+    <h2>Newly Registred Users<br/></h2>
     <table class="table table-striped">
       <thead>
       <tr>

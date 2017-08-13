@@ -13,7 +13,7 @@
       <form class="navbar-form navbar-left" [formGroup]="searchForm" (ngSubmit)="onSearchSubmit()">
         <div class="input-group">
           <div class="input-group-btn">
-            <input type="text" class="form-control" placeholder="Search" formControlName="searchKey">
+            <input type="text" class="form-control" placeholder="Search" formControlName="searchKey" required>
             <select class="form-control" formControlName="searchOption">
               <option value="categeory">Categeory</option>
               <option value="rating">Rating</option>

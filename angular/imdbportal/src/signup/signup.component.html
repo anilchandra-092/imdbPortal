@@ -21,6 +21,9 @@
           <div *ngIf="userForm.controls['uname'].hasError('minlength')" class=" alert alert-xs alert-danger">
             name minimumlength should be 4
           </div>
+            <div *ngIf="userForm.controls['uname'].hasError('pattern')" class=" alert alert-xs alert-danger">
+              name should not contain any special characters except '_' and length should be 4 to 50
+            </div>
         </div>
       </div>
     </div>
@@ -33,7 +36,7 @@
         </div>
         <div *ngIf="userForm.controls['password'].touched">
           <div *ngIf="userForm.controls['password'].hasError('pattern')" class=" alert alert-xs alert-danger">
-            Password should be of minimum 8 to 16 characters and must contain at least 1 alphabet, 1 number
+            Password should be of minimum 8 to 16 characters and must contain at least 1 alphabet, 1 number and should not contain any special characters
           </div>
         </div>
       </div>
@@ -47,7 +50,7 @@
         </div>
         <div *ngIf="userForm.controls['confpass'].touched">
           <div *ngIf="userForm.controls['confpass'].hasError('pattern')" class=" alert alert-xs alert-danger">
-            conform Password should be of minimum 8 to 16 characters and must contain at least 1 alphabet, 1 number
+            conform Password should be of minimum 8 to 16 characters and must contain at least 1 alphabet, 1 number and should not contain any special characters
           </div>
         </div>
       </div>

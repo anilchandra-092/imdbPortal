@@ -21,7 +21,7 @@ export class SignupComponent {
   buildUserForm(){
 
     this.userForm=this._formBuilder.group({
-      uname:[null,[Validators.required,Validators.minLength(4)]],
+      uname:[null,[Validators.required,Validators.minLength(4),Validators.pattern("^[a-zA-Z0-9_]{4,50}$")]],
       password:[null,[Validators.pattern("^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{8,16}$")]],
       confpass:[null,[Validators.pattern("^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{8,16}$")]],
       email:[],

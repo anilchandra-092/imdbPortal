@@ -12,11 +12,19 @@ export class ContentServiceComponent {
   constructor(private _http: Http) {}
 
   getRequest(url){
-    return  this._http.get(url).map((response: Response) => response.json()).catch(this._errorHandler);
+    return  this._http.get(url,{withCredentials: true}).map((response: Response) => response.json()).catch(this._errorHandler);
   }
 
   _errorHandler(error: Response) {
     return Observable.throw(error || "json url not found");
+  }
+  checkHeaders(){
+    let url = this.baseUrl+'/users/checkSession';
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this._http.get(url, { headers: headers, withCredentials: true })
+      .map((response: Response) => response.headers)
+      .catch(this._errorHandler);
   }
 
   checkForSession() {
@@ -63,7 +71,7 @@ export class ContentServiceComponent {
   changeStatus(id,status){
     var url=this.baseUrl+"/users/"+id+"?status="+status;
     console.log(url);
-    return this._http.put(url,{}).map((response: Response) => response.json()).catch(this._errorHandler);
+    return this._http.put(url,{},{withCredentials: true}).map((response: Response) => response.json()).catch(this._errorHandler);
   }
 
   getMovieToAdmin(movieId){
@@ -92,7 +100,7 @@ export class ContentServiceComponent {
       "searchOption":searchOption
     };
 
-    return this._http.post(url,body).map((response: Response) =>response.json()).catch(this._errorHandler);
+    return this._http.post(url,body,{withCredentials: true}).map((response: Response) =>response.json()).catch(this._errorHandler);
   }
 
   getCountOfMoviesInSearch(searchKey,searchOption){
@@ -102,7 +110,7 @@ export class ContentServiceComponent {
       "searchOption":searchOption
     };
     event.preventDefault();
-    return this._http.post(url,body).map((response: Response) =>response.json()).catch(this._errorHandler);
+    return this._http.post(url,body,{withCredentials: true}).map((response: Response) =>response.json()).catch(this._errorHandler);
   }
 
   getMovie(mid){
@@ -127,7 +135,7 @@ export class ContentServiceComponent {
   addMovie(movieDetails){
     event.preventDefault();
     var url=this._url1+"/addMovie";
-    return this._http.post(url,movieDetails)
+    return this._http.post(url,movieDetails,{withCredentials: true})
       .map((response: Response) => response.json())
       .catch(this._errorHandler);
   }

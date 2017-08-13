@@ -31,7 +31,6 @@ public class LoginResource {
 				HttpSession session = request.getSession();
 				session.setAttribute("role", obj.get("role"));
 				session.setAttribute("id",obj.get("id"));
-				
 				System.out.println("session created for login");
 			}
 		}catch(Exception e){

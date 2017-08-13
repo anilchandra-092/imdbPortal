@@ -62,7 +62,10 @@ public class UserValidate extends BaseBO{
 	
 	public boolean isValidData(String uname,String password){
 		boolean result=true;
-		if(uname.length()<4){
+		if(uname.length()<4 || uname.length()>50){
+			return false;
+		}
+		if(!Pattern.matches("^[a-zA-Z0-9_]{4,50}$",uname)){
 			return false;
 		}
 		if(!Pattern.matches("^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{8,16}$", password)){

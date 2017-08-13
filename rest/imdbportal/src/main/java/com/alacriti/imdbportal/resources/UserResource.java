@@ -29,8 +29,10 @@ public class UserResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public JSONObject addUser(User usr) {
 		JSONObject obj = null;
+		UserDelegate userDelegate=null;
 		try {
-			obj = new UserDelegate().addUser(usr);
+			userDelegate=new UserDelegate();
+			obj =userDelegate.addUser(usr);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -43,8 +45,10 @@ public class UserResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> getNewUsers() {
 		List<User> list=null;
+		UserDelegate userDelegate=null;
 		try {
-			list = new UserDelegate().getNewUsers();
+			userDelegate=new UserDelegate();
+			list = userDelegate.getNewUsers();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,8 +65,10 @@ public class UserResource {
 			@QueryParam("status") String status
 			) {
 		boolean result=false;
+		UserDelegate userDelegate=null;
 		try {
-			result = new UserDelegate().updateUserStatus(userId,status);
+			userDelegate=new UserDelegate();
+			result = userDelegate.updateUserStatus(userId,status);
 		} catch (Exception e) {
 			result=false;
 			e.printStackTrace();

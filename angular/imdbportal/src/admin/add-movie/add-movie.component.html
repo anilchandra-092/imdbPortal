@@ -67,20 +67,21 @@
         <input type="text" class="form-control" placeholder="Enter starCast" formControlName="starCast">
       </div>
     </div>
-
-      <div class="checkbox form-group">
+    <div class="form-group">
+      <label class="control-label col-sm-2">Genres:</label>
+      <div class="col-sm-2">
         <label><input type="checkbox" value="comedy" formControlName="comedy">Comedy</label>
       </div>
-      <div class="checkbox form-group">
+      <div class="col-sm-2">
         <label><input type="checkbox" value="scifi" formControlName="scifi">Scifi</label>
       </div>
-      <div class="checkbox form-group">
+      <div class="col-sm-2">
         <label><input type="checkbox" value="action" formControlName="action">Action</label>
       </div>
-      <div class="checkbox form-group">
+      <div class="col-sm-2">
         <label><input type="checkbox" value="romantic" formControlName="romantic">Romantic</label>
       </div>
-
+    </div>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <button type="submit" [disabled]="!movieForm.valid" class="btn btn-primary form-control">Submit</button>

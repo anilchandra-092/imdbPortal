@@ -7,6 +7,7 @@ import com.alacriti.imdbportal.dao.impl.UserDAO;
 import com.alacriti.imdbportal.exceptions.BOException;
 import com.alacriti.imdbportal.exceptions.DAOException;
 import com.alacriti.imdbportal.models.User;
+import com.alacriti.imdbportal.util.MailUtil;
 
 public class UserBO extends BaseBO {
 	public UserBO() {
@@ -64,6 +65,7 @@ public class UserBO extends BaseBO {
 		try{
 			userdao=new UserDAO(getConnection());
 			result=userdao.updateUserStatus(userId,status);
+			//new MailUtil().sendMailTo(); for sending mail to users
 		}catch (DAOException e) {
 			throw new BOException("DAOException Occured");
 		} catch (Exception e) {

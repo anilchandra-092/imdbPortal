@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {AuthentificationServiceComponent} from "../app/authentification.service.component";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Http} from "@angular/http";
 import {Router} from "@angular/router";
 import {EventEmmiterService} from "./event-emmiter.service";
@@ -28,7 +28,7 @@ export class ContentComponent {
 
   ngOnInit(){
     this.searchForm=this._formBuilder.group({
-      searchKey:[],
+      searchKey:[null,[Validators.required]],
       searchOption:["movie"]
     });
     this.eventEmmitterService.getLoginStatus().subscribe(Login=>this.isLogoutDisabled=!Login.status);

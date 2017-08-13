@@ -18,18 +18,21 @@ export class AdminAuthguardService implements CanActivate {
       .subscribe(
         data => this.isValidSession = data,
         dataError => this.errorMsg = dataError,
-        ()=>{
-          console.log("call back function is valid admin session: ==>",this.isValidSession);
-          if(this.isValidSession==true){
-            console.log("==> Valid session");
-            this.router.navigate(['/admin']);
-          }
-          else{
-            console.log("==> Invalid session");
-            this.router.navigate(['/login']);
-          }
-        }
+        ()=>{ this.checkForSessionWithUserRoleCallBackFunction();}
       );
     return this.isValidSession;
+  }
+  checkForSessionWithUserRoleCallBackFunction(){
+
+    console.log("call back function is valid admin session: ==>",this.isValidSession);
+    if(this.isValidSession==true){
+      console.log("==> Valid session");
+      this.router.navigate(['/admin']);
+    }
+    else{
+      console.log("==> Invalid session");
+      this.router.navigate(['/login']);
+    }
+
   }
 }

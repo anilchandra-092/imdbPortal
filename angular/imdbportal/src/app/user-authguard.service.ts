@@ -18,19 +18,23 @@ export class UserAuthguardService implements CanActivate {
       .subscribe(
         data => this.isValidSession = data,
         dataError => this.errorMsg = dataError,
-        ()=>{
-          console.log("call back function is valid user session: ==>",this.isValidSession);
-          if(this.isValidSession==true){
-            console.log("==> Valid session");
-            this.router.navigate(['/user']);
-          }
-          else{
-            console.log("==> Invalid session");
-            this.router.navigate(['/login']);
-          }
-        }
+        ()=>{ this.checkForSessionWithUserRoleCallBackFuncion();}
       );
 
     return this.isValidSession;
   }
+
+  checkForSessionWithUserRoleCallBackFuncion(){
+
+    console.log("call back function is valid user session: ==>",this.isValidSession);
+    if(this.isValidSession==true){
+      console.log("==> Valid session");
+      this.router.navigate(['/user']);
+    }
+    else{
+      console.log("==> Invalid session");
+      this.router.navigate(['/login']);
+    }
+
+    }
 }
