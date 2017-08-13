@@ -37,15 +37,6 @@ public class Movie {
 		this.weightage=weightage;
 	}
 	
-	/*public Movie(String title,String imagePath ,String shortDescription, float avgRating,
-			String language, String director, int year, String duration,
-			String detailDescription, String starCast,boolean comedy,boolean romantic,boolean scifi,boolean action) {
-		this(title,imagePath,shortDescription,avgRating,language,director,year,duration,detailDescription,starCast);
-		this.comedy = comedy;
-		this.romantic=romantic;
-		this.scifi = scifi;
-		this.action = action;
-	}*/
 	
 	public Movie(String title,String imagePath ,String shortDescription, float avgRating,
 			String language, String director, int year, String duration,

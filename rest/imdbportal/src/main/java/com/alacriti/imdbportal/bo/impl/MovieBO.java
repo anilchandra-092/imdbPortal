@@ -12,17 +12,16 @@ import com.alacriti.imdbportal.models.Movie;
 public class MovieBO extends BaseBO{
 	public MovieBO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public MovieBO(Connection con) {
 		super(con);
-		// TODO Auto-generated constructor stub
 	}
 	
-	static MovieDAO mdao=null;
+
 	public List<Movie> getAllMovies(int start,int end) throws BOException{
 		List<Movie> list=null;
 		List<Movie> result=null;
+		MovieDAO mdao=null;
 		try{
 			mdao=new MovieDAO(getConnection());
 			list =mdao.getAllMovies();
@@ -43,9 +42,15 @@ public class MovieBO extends BaseBO{
 		return result;
 	}
 	
-	public List<Movie> getAllMoviesToAdmin(int start,int end,String categeory) throws BOException{
+	public List<Movie> getAllMoviesToAdmin(
+			int start,
+			int end,
+			String categeory) throws BOException{
+		
 		List<Movie> list=null;
 		List<Movie> result=null;
+		MovieDAO mdao=null;
+		
 		try{
 			mdao=new MovieDAO(getConnection());
 			list =mdao.getAllMoviesToAdmin(categeory);
@@ -78,6 +83,7 @@ public class MovieBO extends BaseBO{
 	
 	public int getMoviesCount() throws BOException{
 		int result=0;
+		MovieDAO mdao=null;
 		try{
 			mdao=new MovieDAO(getConnection());
 			result=mdao.getMoviesCount();
@@ -91,6 +97,7 @@ public class MovieBO extends BaseBO{
 	
 	public int getMoviesCountToAdmin(String categeory) throws BOException{
 		int result=0;
+		MovieDAO mdao=null;
 		try{
 			mdao=new MovieDAO(getConnection());
 			result=mdao.getMoviesCountToAdmin(categeory);
@@ -106,6 +113,7 @@ public class MovieBO extends BaseBO{
 	
 	public Movie getMovie(int id) throws BOException{
 		Movie movie=null;
+		MovieDAO mdao=null;
 		try{
 			mdao=new MovieDAO(getConnection());
 			movie=mdao.getMovieDeatils(id);
@@ -119,6 +127,7 @@ public class MovieBO extends BaseBO{
 	
 	public Movie getMovieDetailsFully(int movieId) throws BOException{
 		Movie movie=null;
+		MovieDAO mdao=null;
 		try{
 			mdao=new MovieDAO(getConnection());
 			movie=mdao.getMovieDeatilsFully(movieId);
@@ -132,6 +141,7 @@ public class MovieBO extends BaseBO{
 	
 	public int getUserRate(int mid,int uid) throws BOException{
 		int result=0;
+		MovieDAO mdao=null;
 		try{
 			mdao=new MovieDAO(getConnection());
 			result=mdao.getUserRate(mid,uid);
@@ -142,7 +152,9 @@ public class MovieBO extends BaseBO{
 		}
 		return result;
 	}
+	
 	public void setUserRatetoMovie(int mid,int uid,int rate) throws BOException{
+		MovieDAO mdao=null;
 		try{
 			mdao=new MovieDAO(getConnection());
 			mdao.setUserRatetoMovie(mid,uid,rate);
@@ -154,6 +166,7 @@ public class MovieBO extends BaseBO{
 	}
 	
 	public void addMovie(Movie movie) throws BOException{
+		MovieDAO mdao=null;
 		try{
 			mdao=new MovieDAO(getConnection());
 			mdao.addMovieToDB(movie);
@@ -165,6 +178,7 @@ public class MovieBO extends BaseBO{
 	}
 	
 	public void updateMovie(int movieId,Movie movie) throws BOException{
+		MovieDAO mdao=null;
 		try{
 			mdao=new MovieDAO(getConnection());
 			mdao.updateMovieInDB(movieId,movie);
@@ -176,6 +190,7 @@ public class MovieBO extends BaseBO{
 	}
 	
 	public void deleteMovie(int mid) throws BOException{
+		MovieDAO mdao=null;
 		try{
 			mdao=new MovieDAO(getConnection());
 			mdao.deleteMovieFromDB(mid);
@@ -185,17 +200,5 @@ public class MovieBO extends BaseBO{
 			throw new BOException();
 		}
 	}
-	public int getLastMovieIndex() throws BOException{
-		int index=-1;
-		try{
-			mdao=new MovieDAO(getConnection());
-			index=mdao.getLastMovieIndex();
-		}catch (DAOException e) {
-			throw new BOException("DAOException Occured");
-		} catch (Exception e) {
-			throw new BOException();
-		}
-		return index;
-	}
-	
+
 }

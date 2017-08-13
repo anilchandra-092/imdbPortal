@@ -9,15 +9,14 @@ import com.alacriti.imdbportal.models.Movie;
 import com.alacriti.imdbportal.models.SearchModel;
 
 public class SearchDelegate extends BaseDelegate{
-	
-	static SearchBO sbo=null;
-	
+
 	public SearchDelegate() {
 		super();
 	}
 	
 	
 	public List<Movie> getAllMovies(int start,int end,SearchModel searchObj) throws Exception{
+		SearchBO sbo=null;
 		List<Movie> list=null;
 		Connection connection=null;
 		boolean rollBack = false;
@@ -45,7 +44,9 @@ public class SearchDelegate extends BaseDelegate{
 		
 		return list;
 	}
+	
 	public int getMoviesCount(SearchModel searchObj) throws Exception{
+		SearchBO sbo=null;
 		int result=0;
 		Connection connection=null;
 		boolean rollBack = false;

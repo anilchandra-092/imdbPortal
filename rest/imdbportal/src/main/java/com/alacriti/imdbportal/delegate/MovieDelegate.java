@@ -9,13 +9,12 @@ import com.alacriti.imdbportal.models.Movie;
 
 public class MovieDelegate extends BaseDelegate{
 	
-	static MovieBO mbo=null;
-	
 	public MovieDelegate() {
 		super();
 	}
 	
 	public List<Movie> getAllMovies(int start,int end) throws Exception{
+		MovieBO mbo=null;
 		List<Movie> list=null;
 		Connection connection=null;
 		boolean rollBack = false;
@@ -45,6 +44,7 @@ public class MovieDelegate extends BaseDelegate{
 	}
 	
 	public List<Movie> getAllMoviesToAdmin(int start,int end,String categeory) throws Exception{
+		MovieBO mbo=null;
 		List<Movie> list=null;
 		Connection connection=null;
 		boolean rollBack = false;
@@ -74,6 +74,7 @@ public class MovieDelegate extends BaseDelegate{
 	}
 	
 	public int getMoviesCount() throws Exception{
+		MovieBO mbo=null;
 		int result=0;
 		Connection connection=null;
 		boolean rollBack = false;
@@ -92,6 +93,7 @@ public class MovieDelegate extends BaseDelegate{
 	}
 	
 	public int getMoviesCountToAdmin(String categeory) throws Exception{
+		MovieBO mbo=null;
 		int result=0;
 		Connection connection=null;
 		boolean rollBack = false;
@@ -111,7 +113,7 @@ public class MovieDelegate extends BaseDelegate{
 	
 	
 	public Movie getMovie(int id) throws Exception{
-
+		MovieBO mbo=null;
 		Movie movie=null;
 		Connection connection=null;
 		boolean rollBack = false;
@@ -130,7 +132,7 @@ public class MovieDelegate extends BaseDelegate{
 	}
 	
 	public Movie getMovieDetailsFully(int movieId) throws Exception{
-
+		MovieBO mbo=null;
 		Movie movie=null;
 		Connection connection=null;
 		boolean rollBack = false;
@@ -150,6 +152,7 @@ public class MovieDelegate extends BaseDelegate{
 	}
 	
 	public int getUserRatingofMovie(int mid,int uid) throws Exception{
+		MovieBO mbo=null;
 		int result=0;
 		Connection connection=null;
 		boolean rollBack = false;
@@ -169,6 +172,7 @@ public class MovieDelegate extends BaseDelegate{
 	}
 	
 	public void setUserRatingtoMovie(int mid,int uid,int rate) throws Exception {
+		MovieBO mbo=null;
 		Connection connection=null;
 		boolean rollBack = false;
 		try{
@@ -187,6 +191,7 @@ public class MovieDelegate extends BaseDelegate{
 	}
 	
 	public void addMovie(Movie movie) throws Exception{
+		MovieBO mbo=null;
 		Connection connection=null;
 		boolean rollBack = false;
 		try{
@@ -205,6 +210,7 @@ public class MovieDelegate extends BaseDelegate{
 	}
 	
 	public void updateMovie(int movieId,Movie movie) throws Exception{
+		MovieBO mbo=null;
 		Connection connection=null;
 		boolean rollBack = false;
 		try{
@@ -224,6 +230,7 @@ public class MovieDelegate extends BaseDelegate{
 	
 	
 	public void deleteMovie(int mid) throws Exception{
+		MovieBO mbo=null;
 		Connection connection=null;
 		boolean rollBack = false;
 		try{
@@ -240,23 +247,5 @@ public class MovieDelegate extends BaseDelegate{
 			endDBTransaction(connection, rollBack);
 		}
 	}
-	public int getLastMovieIndex() throws Exception{
-		Connection connection=null;
-		boolean rollBack = false;
-		int index=-1;
-		try{
-			connection = startDBTransaction();
-			setConnection(connection);
-			mbo=new MovieBO(connection);
-			index=mbo.getLastMovieIndex();
-			
-		}catch(Exception e){
-			rollBack=true;
-			e.printStackTrace();
-			throw e;
-		}finally{
-			endDBTransaction(connection, rollBack);
-		}
-		return index;
-	}
+
 }

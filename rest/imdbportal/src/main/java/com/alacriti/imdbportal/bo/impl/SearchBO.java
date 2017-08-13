@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alacriti.imdbportal.constants.DBColumnConstants;
 import com.alacriti.imdbportal.dao.impl.SearchDAO;
 import com.alacriti.imdbportal.exceptions.BOException;
 import com.alacriti.imdbportal.exceptions.DAOException;
@@ -13,16 +14,12 @@ import com.alacriti.imdbportal.models.SearchModel;
 
 public class SearchBO extends BaseBO{
 
-	SearchDAO searchDao=null;
-	
 	public SearchBO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public SearchBO(Connection con) {
 		super(con);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public boolean isSearchObjectValuesValid(SearchModel searchObj) throws ValidateException{
@@ -32,7 +29,12 @@ public class SearchBO extends BaseBO{
 			searchOption=searchObj.getSearchOption();
 			if(searchOption.equals("categeory")){
 				String categeory=searchObj.getSearchKey().toLowerCase().trim();
-				if(categeory.equals("comedy")||categeory.equals("romantic")||categeory.equals("scifi")||categeory.equals("action")){
+				if(
+					categeory.equals(DBColumnConstants.GENRES_TBL_NAME_COMEDY)||
+					categeory.equals(DBColumnConstants.GENRES_TBL_NAME_ROMANTIC)||
+					categeory.equals(DBColumnConstants.GENRES_TBL_NAME_SCIFI)||
+					categeory.equals(DBColumnConstants.GENRES_TBL_NAME_ACTION)
+				){
 					result=true;
 				}else{
 					result=false;
@@ -56,6 +58,7 @@ public class SearchBO extends BaseBO{
 	}
 	
 	public List<Movie> getAllMovies(int start,int end,SearchModel searchObj) throws BOException{
+		SearchDAO searchDao=null;
 		List<Movie> list=null;
 		List<Movie> result=null;
 		String searchOption;
@@ -93,6 +96,7 @@ public class SearchBO extends BaseBO{
 	}
 	
 	public int getMoviesCount(SearchModel searchObj) throws BOException{
+		SearchDAO searchDao=null;
 		int result=0;
 		String searchOption;
 		try{
@@ -107,7 +111,7 @@ public class SearchBO extends BaseBO{
 				result=searchDao.getAllMoviesByRating(rate).size();
 			}
 			else if(searchOption.equals("movie")){
-				result=searchDao.getAllMoviesByMovieName(searchObj.getSearchKey().trim()).size();
+			   result=searchDao.getAllMoviesByMovieName(searchObj.getSearchKey().trim()).size();
 			}
 			
 		}catch (DAOException e) {

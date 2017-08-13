@@ -5,7 +5,6 @@ public class LoginModel {
 	private String password;
 	
 	public LoginModel() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public LoginModel(String uname, String password) {

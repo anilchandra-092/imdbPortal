@@ -22,8 +22,10 @@ public class LoginResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public JSONObject checkUser(LoginModel login,@Context HttpServletRequest request){
 		JSONObject obj=null;
+		UserDelegate delegate = null;
 		try{
-			obj=new UserDelegate().checkUser(login);
+			delegate = new UserDelegate();
+			obj=delegate.checkUser(login);
 			if(obj.get("status").equals("Success")){
 				System.out.println("creating session for login");
 				HttpSession session = request.getSession();

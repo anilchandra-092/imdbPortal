@@ -11,7 +11,6 @@ public class SearchModel {
 	}
 	
 	public SearchModel() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getSearchKey() {

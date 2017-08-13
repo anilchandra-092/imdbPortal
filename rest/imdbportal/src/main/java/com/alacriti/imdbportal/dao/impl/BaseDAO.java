@@ -60,8 +60,6 @@ public class BaseDAO {
 
 	protected PreparedStatement getPreparedStatement(Connection connection, String sqlCmd) throws SQLException {
 
-	
-
 		try {
 			return connection.prepareStatement(sqlCmd);
 		} catch (SQLException e) {

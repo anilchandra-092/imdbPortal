@@ -12,27 +12,25 @@ import com.alacriti.imdbportal.models.User;
 
 public class UserDelegate extends BaseDelegate{
 	
-	UserBO userbo=null;
-	UserValidate userValidate=null;
-	
 	public UserDelegate() {
 		super();
 	}
 	public  JSONObject addUser(User usr){
+		UserBO userbo=null;
 		JSONObject obj=null;
 		Connection connection=null;
 		boolean rollBack = false;
-		
+		UserValidate userValidate=null;
 		try{
 			connection = startDBTransaction();
 			setConnection(connection);
 			userValidate=new UserValidate(connection);
 			if(userValidate.isValidData(usr.getUname(),usr.getPassword())){
-				
-				if(userValidate.isUserExist(usr.getUname())){
-					obj=createJsonObject("Fail","user already exists");
+				if(userValidate.isUserNameExist(usr.getUname())){
+					obj=createJsonObject("Fail","user name allready exists");
 				}
 				else{
+					if(!(userValidate.isUserEmailExist(usr.getEmail()))){
 					userbo=new UserBO(connection);
 					if(userbo.addUser(usr)){
 						obj=createJsonObject("Success","user added successfully");
@@ -40,6 +38,10 @@ public class UserDelegate extends BaseDelegate{
 					else{
 						obj=createJsonObject("Fail","not able to addd user");
 						rollBack=true;
+					}
+					
+					}else{
+						obj=createJsonObject("Fail","user email allready existed");
 					}
 				}
 			}
@@ -57,21 +59,22 @@ public class UserDelegate extends BaseDelegate{
 	}
 	
 	public JSONObject checkUser(LoginModel login){
+		UserBO userbo=null;
 		JSONObject obj=null;
 		Connection connection=null;
 		boolean rollBack = false;
+		UserValidate userValidate=null;
 		try{
 			connection = startDBTransaction();
 			setConnection(connection);
 			userValidate=new UserValidate(connection);
 			if(userValidate.isValidData(login.getUname(),login.getPassword())){
-				if(userValidate.isUserExist(login.getUname())){
+				if(userValidate.isUserNameExist(login.getUname())){
 					if(userValidate.isApprovedUser(login.getUname())){
 						userbo=new UserBO(connection);
 						User usr=userbo.checkPassword(login.getUname(),login.getPassword());
 						if(usr!=null){
 							obj=createJsonObject("Success","Valid User");
-							
 								obj.put("role", usr.getRole());
 								obj.put("id", usr.getId());
 						}
@@ -85,11 +88,11 @@ public class UserDelegate extends BaseDelegate{
 					}
 				}
 				else{
-					obj=createJsonObject("Fail","user not existed");
+					obj=createJsonObject("Fail","Invalid UserName");
 				}
 			}
 			else{
-				obj=createJsonObject("Fail","User data Validation Fail,Invalid format");
+				obj=createJsonObject("Fail","Invalid UserName or Password");
 			}
 		}catch(Exception e){
 			rollBack=true;
@@ -106,7 +109,9 @@ public class UserDelegate extends BaseDelegate{
 		obj.put("message", msg);
 		return obj;
 	}
+	
 	public List<User> getNewUsers(){
+		UserBO userbo=null;
 		List<User> list=null;
 		Connection connection=null;
 		boolean rollBack = false;
@@ -125,6 +130,7 @@ public class UserDelegate extends BaseDelegate{
 	}
 	
 	public boolean updateUserStatus(int userId,String status){
+		UserBO userbo=null;
 		boolean result=false;
 		Connection connection=null;
 		boolean rollBack = false;
@@ -141,6 +147,5 @@ public class UserDelegate extends BaseDelegate{
 		}
 		return result;
 	}
-	
 	
 }

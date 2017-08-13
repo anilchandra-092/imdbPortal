@@ -17,12 +17,26 @@ public class UserValidate extends BaseBO{
 		super(con);
 	}
 	
-	public  boolean isUserExist(String uname)throws BOException{
+	public  boolean isUserNameExist(String uname)throws BOException{
 		boolean result=false;
 		UserDAO userDAO=null;
 		try{
 		userDAO=new UserDAO(getConnection());
-		result=userDAO.isUserExist(uname);
+		result=userDAO.isUserNameExist(uname);
+		}catch (DAOException e) {
+			throw new BOException("DAOException Occured");
+		} catch (Exception e) {
+			throw new BOException();
+		}
+		return result;
+	}
+	
+	public  boolean isUserEmailExist(String email)throws BOException{
+		boolean result=false;
+		UserDAO userDAO=null;
+		try{
+		userDAO=new UserDAO(getConnection());
+		result=userDAO.isUserEmailExist(email);
 		}catch (DAOException e) {
 			throw new BOException("DAOException Occured");
 		} catch (Exception e) {

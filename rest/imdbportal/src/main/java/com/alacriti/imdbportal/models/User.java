@@ -12,7 +12,6 @@ public class User {
 	private String status;
 	
 	public User() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public User(int id, String uname, String email, String role) {

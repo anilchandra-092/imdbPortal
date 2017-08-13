@@ -11,15 +11,13 @@ import com.alacriti.imdbportal.models.User;
 public class UserBO extends BaseBO {
 	public UserBO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public UserBO(Connection con) {
 		super(con);
-		// TODO Auto-generated constructor stub
 	}
 	
-	UserDAO userdao=null;
 	public  boolean addUser(User usr) throws BOException{
+		UserDAO userdao=null;
 		try{
 			userdao=new UserDAO(getConnection());
 			userdao.addUserToDb(usr);
@@ -30,7 +28,9 @@ public class UserBO extends BaseBO {
 		}
 		return true;
 	}
+	
 	public User checkPassword(String uname,String password) throws BOException{
+		UserDAO userdao=null;
 		User usr=null;
 		try{
 			userdao=new UserDAO(getConnection());
@@ -43,7 +43,9 @@ public class UserBO extends BaseBO {
 		}
 		return usr;
 	}
+	
 	public List<User> getNewUsers() throws BOException{
+		UserDAO userdao=null;
 		List<User> list=null;
 		try{
 			userdao=new UserDAO(getConnection());
@@ -57,6 +59,7 @@ public class UserBO extends BaseBO {
 	}
 	
 	public  boolean updateUserStatus(int userId,String status) throws BOException{
+		UserDAO userdao=null;
 		boolean result=false;
 		try{
 			userdao=new UserDAO(getConnection());

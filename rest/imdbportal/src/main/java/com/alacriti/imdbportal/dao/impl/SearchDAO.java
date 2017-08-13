@@ -7,18 +7,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alacriti.imdbportal.constants.Constants;
+import com.alacriti.imdbportal.constants.DBColumnConstants;
 import com.alacriti.imdbportal.exceptions.DAOException;
 import com.alacriti.imdbportal.models.Movie;
 
 public class SearchDAO extends BaseDAO{
 	public SearchDAO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public SearchDAO(Connection con) {
 		super(con);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public List<Movie> getAllMoviesByCategeory(String categeory) throws DAOException{
@@ -43,12 +41,14 @@ public class SearchDAO extends BaseDAO{
 		List<Movie> list=null;
 		Statement st=null;
 		ResultSet rs=null;
+		MovieDAO mdao=null;
 		try{
 			list=new ArrayList<Movie>();
+			mdao=new MovieDAO();
 			st=getConnection().createStatement();
-			rs=st.executeQuery("select * from anilkumarreddyg_imdb_movie_tbl where avg_rating>="+rate+" order by weightage desc;");
+			rs=st.executeQuery(getAllMoviesByRatingSqlCmd(rate));
 			while(rs.next()){
-				list.add(new Movie(rs.getInt("id"), rs.getString("title"),Constants.IMAGE_BASE_URL+rs.getString("image_path"),rs.getString("short_desc"), rs.getFloat("avg_rating")));
+				list.add(mdao.getMovieWithMinimumDetails(rs));
 			} 
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -63,17 +63,24 @@ public class SearchDAO extends BaseDAO{
 		}
 		return list;
 	}
+	private String getAllMoviesByRatingSqlCmd(float rate){
+		return "select * from anilkumarreddyg_imdb_movie_tbl "
+				+" where "+ DBColumnConstants.MOVIE_TBL_AVG_RATING +">="+rate
+				+" order by "+ DBColumnConstants.MOVIE_TBL_WEIGHTAGE +" desc;";
+	}
 	
 	public List<Movie> getAllMoviesByMovieName(String movieName)throws DAOException{
 		List<Movie> list=null;
 		Statement st=null;
 		ResultSet rs=null;
+		MovieDAO mdao=null;
 		try{
 			list=new ArrayList<Movie>();
+			mdao=new MovieDAO();
 			st=getConnection().createStatement();
-			rs=st.executeQuery("select * from anilkumarreddyg_imdb_movie_tbl where title like \"%"+movieName+"%\" order by weightage desc;");
+			rs=st.executeQuery(getAllMoviesByMovieNameSqlCmd(movieName));
 			while(rs.next()){
-				list.add(new Movie(rs.getInt("id"), rs.getString("title"),Constants.IMAGE_BASE_URL+rs.getString("image_path"),rs.getString("short_desc"), rs.getFloat("avg_rating")));
+				list.add(mdao.getMovieWithMinimumDetails(rs));
 			} 
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -87,5 +94,10 @@ public class SearchDAO extends BaseDAO{
 			close(st);
 		}
 		return list;
+	}
+	private String getAllMoviesByMovieNameSqlCmd(String movieName){
+		return "select * from anilkumarreddyg_imdb_movie_tbl "
+				+" where "+DBColumnConstants.MOVIE_TBL_TITLE+" like \"%"+movieName+"%\" "
+				+" order by "+DBColumnConstants.MOVIE_TBL_WEIGHTAGE+" desc;";
 	}
 }
