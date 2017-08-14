@@ -37,6 +37,14 @@ export class ContentServiceComponent {
       .map((response: Response) => response.json())
       .catch(this._errorHandler);
   }
+  getSessionData(){
+    console.log("getSessionData");
+    let url = this.baseUrl+'/users/getSessionData';
+    return this._http.get(url, { withCredentials: true })
+      .map((response: Response) => response.json())
+      .catch(this._errorHandler);
+
+  }
 
   checkForSessionWithUserRole(role) {
     console.log("checkForSessionWithUserRole:"+role);

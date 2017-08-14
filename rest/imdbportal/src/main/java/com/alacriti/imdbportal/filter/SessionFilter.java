@@ -21,7 +21,6 @@ public class SessionFilter implements ContainerRequestFilter{
 	 private static final ServerResponse ACCESS_FORBIDDEN = new ServerResponse("Nobody can access this resource", 403, new Headers<Object>());;
 	@Context HttpServletRequest servletRequest;
 	public void filter(ContainerRequestContext requestContext) throws IOException {
-		System.out.println(servletRequest.getRequestURI());
 		SessionUtility sessionUtility=null;
 		List<String> urlList=null;
 		boolean isSessionValidationRequired=false;
@@ -64,6 +63,7 @@ public class SessionFilter implements ContainerRequestFilter{
 			urlList.add("newUsers");
 			urlList.add("setRate");
 			urlList.add("uploadMovieDetails");
+			urlList.add("getSessionData");
 			
 		}catch(Exception e){
 			e.printStackTrace();

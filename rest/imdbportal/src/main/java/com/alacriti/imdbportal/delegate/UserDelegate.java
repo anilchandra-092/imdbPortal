@@ -3,6 +3,9 @@ package com.alacriti.imdbportal.delegate;
 import java.sql.Connection;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONObject;
 
 import com.alacriti.imdbportal.bo.impl.UserBO;
@@ -146,6 +149,25 @@ public class UserDelegate extends BaseDelegate{
 			endDBTransaction(connection, rollBack);
 		}
 		return result;
+	}
+	
+	public User getSessionData(HttpServletRequest request){
+		User user=null;
+		HttpSession session=null;
+		try{
+			session= request.getSession(false);
+			user=new User();
+			if(session!=null){
+				int id=(Integer)session.getAttribute("id");
+				user.setId(id);
+				user.setRole(session.getAttribute("role").toString());
+			}
+			
+		}catch(Exception e){
+			System.out.println("exception Occured in getting session attributes in user delegate layer");
+			e.printStackTrace();
+		}
+		return user;
 	}
 	
 }

@@ -10,6 +10,7 @@ export class AuthentificationServiceComponent {
     this.auth.id=id;
     this.auth.role=role;
     console.log("==>authservice role:",this.auth.role);
+    console.log("==>authservice id:",this.auth.id);
   }
   delAuthObject(){
     this.auth.id="";

@@ -100,7 +100,7 @@ public class UserResource {
 	public boolean checkSessoinWithUserRole(@PathParam("user") String userRole,
 			@Context HttpServletRequest request) {
 		boolean result = false;
-		SessionUtility sessionUtility;
+		SessionUtility sessionUtility=null;
 		try {
 			sessionUtility = new SessionUtility();
 			result = sessionUtility.checkForSession(request, userRole);
@@ -116,7 +116,7 @@ public class UserResource {
 	@Produces(MediaType.TEXT_PLAIN)
 	public boolean userLogOut(@Context HttpServletRequest request) {
 		boolean result = false;
-		SessionUtility sessionUtility;
+		SessionUtility sessionUtility=null;
 		try {
 			sessionUtility = new SessionUtility();
 			result = sessionUtility.destroySession(request);
@@ -126,5 +126,20 @@ public class UserResource {
 		}
 		return result;
 	}
+	
+	@GET
+	@Path("/getSessionData")
+	@Produces(MediaType.APPLICATION_JSON)
+	public User getSessionData(@Context HttpServletRequest request) {
+		User user=null;
+		UserDelegate userDelegate=null;
+		try {
+			userDelegate=new UserDelegate();
+			user = userDelegate.getSessionData(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return user;
 
+	}
 }
