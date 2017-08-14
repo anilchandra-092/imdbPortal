@@ -1,3 +1,9 @@
 .sidebar{
   border-left: 2px solid slategray;
 }
+.mypanelBody {
+  height: 120px;
+  overflow-y: auto;
+  min-height: 120px;
+  max-height: 120px;
+}

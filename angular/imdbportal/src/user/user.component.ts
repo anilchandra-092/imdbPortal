@@ -5,7 +5,8 @@ import {MoviesRoutingServiceComponent} from "../movies/movies-routing.service.co
 
 @Component({
   selector:'user-comp',
-  templateUrl:'../movies/movies.component.html'
+  templateUrl:'../movies/movies.component.html',
+  styleUrls:['./user.component.css']
 })
 
 export class UserComponent{

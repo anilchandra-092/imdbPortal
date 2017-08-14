@@ -1,17 +1,16 @@
 <div class="col-sm-9">
   <p>{{errorMsg}}</p>
-  <div class="row text-center">
+  <div class="row ">
 
     <div class="col-sm-4" *ngFor="let movie of movies">
       <div class="navbar-right">
         <span class="glyphicon glyphicon-trash" (click)="onTrahClick(movie.id)"></span><p>  </p>
       </div>
       <div class="panel panel-primary" (click)="onMovieClick(movie.id)">
-        <div class="panel-heading">
-          title: <strong>{{movie.title}}</strong>
+        <div class="panel-heading text-center"><strong>{{movie.title}}</strong>
         </div>
-        <div class="panel-body">
-          <img [src]="movie.imagePath" width="60px" height="60px">
+        <div class="panel-body mypanelBody">
+          <div class="text-center"><img [src]="movie.imagePath" width="60px" height="60px"></div>
           <div>about: {{movie.shortDescription}}</div>
         </div>
         <div class="panel-footer">Rating :{{movie.avgRating}}</div>

@@ -5,7 +5,7 @@
     <div class="well text-center" *ngIf="isVisible">
       {{userMessage}}
     </div>
-
+      <div class="well">
       <form class="form-horizontal" [formGroup]="userForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label class="control-label col-sm-2">User Name:</label>
@@ -31,6 +31,7 @@
           </div>
         </div>
       </form>
+      </div>
   </div>
 </div>
 

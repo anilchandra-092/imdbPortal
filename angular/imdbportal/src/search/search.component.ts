@@ -5,7 +5,8 @@ import {AuthentificationServiceComponent} from "../app/authentification.service.
 
 @Component({
   selector:'search-comp',
-  templateUrl:'./search.component.html'
+  templateUrl:'./search.component.html',
+  styleUrls:['./search.component.css']
 })
 export class SearchComponent{
 

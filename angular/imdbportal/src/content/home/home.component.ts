@@ -5,7 +5,8 @@ import {MoviesRoutingServiceComponent} from "../../movies/movies-routing.service
 
 @Component({
   selector: 'home-comp',
-  templateUrl: '../../movies/movies.component.html'
+  templateUrl: '../../movies/movies.component.html',
+  styleUrls:['./home.component.css']
 })
 export class HomeComponent {
 
