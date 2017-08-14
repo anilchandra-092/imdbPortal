@@ -262,4 +262,32 @@ public class UserDAO extends BaseDAO {
 				+" where "+DBColumnConstants.USER_PROFILE_TBL_ID+"="+userId;
 	}
 	
+	public String getUserMailId(int userId) throws DAOException{
+		String email="";
+		Statement st=null;
+		ResultSet rs=null;;
+		try{
+			st=getConnection().createStatement();
+			rs=st.executeQuery(getUserMailIdSqlCmd(userId));
+			if(rs.next()){
+				email=rs.getString(DBColumnConstants.USER_PROFILE_TBL_EMAIL);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new DAOException("SQL Exception Occured in selectStatement");
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			throw new DAOException();
+		}finally{
+			close(rs);
+			close(st);
+		}
+		return email;
+	}
+	private String getUserMailIdSqlCmd(int userId){
+		return "select "+DBColumnConstants.USER_PROFILE_TBL_EMAIL
+				+" from anilkumarreddyg_imdb_user_profile_tbl "
+				+"where "+DBColumnConstants.USER_PROFILE_TBL_ID+"="+userId;
+	}
 }

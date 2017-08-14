@@ -12,14 +12,14 @@ import javax.mail.internet.MimeMessage;
 
 public class MailUtil {
 	public MailUtil() {}
-	public boolean sendMailTo() {
+	public boolean sendMailTo(String mailId,String status) {
 		
 		boolean result = false;
 		String host = "localhost";
-		final String adminMailId = "lakshmidurga.chalamalasetti@alacriti.com";
-		final String password = "l@kkikrish";
+		final String adminMailId = "anilkumarreddy.gangammagari@alacriti.com";
+		final String password = "8333032071";
 
-		String toAddress = "babureddy979@gmail.com";
+		String toAddress = mailId;
 
 		// Get the session object
 		Properties props = new Properties();
@@ -38,8 +38,14 @@ public class MailUtil {
 			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(adminMailId));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
-			message.setSubject("javatpoint");
-			message.setText("This is simple program of sending email using JavaMail API");
+			message.setSubject("Imdb portal Registration");
+			if("approve".equalsIgnoreCase(status)){
+				message.setText("Your Registration Approved. Now u can login in ImdbPortal");
+			}
+			else{
+				message.setText("Your Registration Rejected by Admin");
+			}
+			
 
 			// send the message
 			Transport.send(message);
