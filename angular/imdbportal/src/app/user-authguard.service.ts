@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
 import {ContentServiceComponent} from "../content/content.service.component";
+import {AuthentificationServiceComponent} from "./authentification.service.component";
 
 @Injectable()
 export class UserAuthguardService implements CanActivate {
@@ -9,7 +10,8 @@ export class UserAuthguardService implements CanActivate {
 
   constructor(
     private router: Router,
-    private contentService:ContentServiceComponent
+    private contentService:ContentServiceComponent,
+    private authService:AuthentificationServiceComponent
   ){}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -33,7 +35,11 @@ export class UserAuthguardService implements CanActivate {
     }
     else{
       console.log("==> Invalid session");
-      this.router.navigate(['/login']);
+      if(this.authService.auth.role=="admin"){
+        this.router.navigate(['/admin']);
+      }else{
+        this.router.navigate(['/login']);
+      }
     }
 
     }
