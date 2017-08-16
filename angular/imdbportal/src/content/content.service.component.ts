@@ -6,7 +6,7 @@ import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class ContentServiceComponent {
-    baseUrl:string='http://localhost:8080/imdbportal';
+    baseUrl:string='http://192.168.32.27:8080/imdbportal';
   _url1:string =this.baseUrl+'/movies';
 
   constructor(private _http: Http) {}

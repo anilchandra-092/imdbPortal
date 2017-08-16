@@ -7,8 +7,8 @@ import {Observable} from "rxjs/Observable";
 @Injectable()
 export class UserdataServiceComponent {
 
-  _addingUserUrl:string ='http://localhost:8080/imdbportal/users/adduser';
-  _loginUrl:string ='http://localhost:8080/imdbportal/login';
+  _addingUserUrl:string ='http://192.168.32.27:8080/imdbportal/users/adduser';
+  _loginUrl:string ='http://192.168.32.27:8080/imdbportal/login';
 
   constructor(private _http: Http) {}
 

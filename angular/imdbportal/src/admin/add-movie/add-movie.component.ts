@@ -101,7 +101,7 @@ export class AddMovieComponent {
     // headers.append('processData', 'false');
     console.log("==>1", formData);
 
-    this._http.post("http://localhost:8080/imdbportal/file/uploadMovieDetails", formData, {headers: headers,withCredentials: true})
+    this._http.post("http://192.168.32.27:8080/imdbportal/file/uploadMovieDetails", formData, {headers: headers,withCredentials: true})
       .map((response: Response) => response.json())
       .subscribe(
         status => this.statusObj = status,

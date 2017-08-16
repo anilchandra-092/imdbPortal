@@ -52,8 +52,8 @@ const routes:Routes=[
   {path:"login",component:LoginComponent},
   {path:"signup",component:SignupComponent},
   {path:"search",component:SearchComponent},
-  {path:"search/:mid",component:MovieDataComponent}
-
+  {path:"search/:mid",component:MovieDataComponent},
+  {path:"**",redirectTo:"/home",pathMatch:"full"}
   ];
 
 @NgModule({
