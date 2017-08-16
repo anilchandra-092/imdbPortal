@@ -6,20 +6,21 @@ import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 public class MovieImageFileForm {
 	
-	   private byte[] file0;
-	   private String fileType;
-		private String title;
-		private String shortDescription;
-		private String language;
-		private String director;
-		private int year;
-		private String duration;
-		private String detailDescription;
-		private String starCast;
-		private boolean comedy;
-		private boolean romantic;
-		private boolean scifi;
-		private boolean action;
+	private byte[] file0;
+	private String fileType;
+	private String title;
+	private String shortDescription;
+	private String language;
+	private String director;
+	private int year;
+	private String duration;
+	private String detailDescription;
+	private String starCast;
+	private boolean comedy;
+	private boolean romantic;
+	private boolean scifi;
+	private boolean action;
+		
 	public byte[] getFile0() {
 		return file0;
 	}

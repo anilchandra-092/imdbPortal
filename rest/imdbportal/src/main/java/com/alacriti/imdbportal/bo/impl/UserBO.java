@@ -62,13 +62,13 @@ public class UserBO extends BaseBO {
 	public  boolean updateUserStatus(int userId,String status) throws BOException{
 		UserDAO userdao=null;
 		boolean result=false;
-		//MailUtil mailUtil=new MailUtil();
-		//String mailId=null;
+		MailUtil mailUtil=new MailUtil();
+		String mailId=null;
 		try{
 			userdao=new UserDAO(getConnection());
 			result=userdao.updateUserStatus(userId,status);
-			//mailId=userdao.getUserMailId(userId);
-			//mailUtil.sendMailTo(mailId,status); // for sending mail to users
+			mailId=userdao.getUserMailId(userId);
+			mailUtil.send(mailId,status); // for sending mail to users
 		}catch (DAOException e) {
 			throw new BOException("DAOException Occured");
 		} catch (Exception e) {
