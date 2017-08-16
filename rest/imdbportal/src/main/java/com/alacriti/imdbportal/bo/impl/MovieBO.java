@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alacriti.imdbportal.constants.Constants;
 import com.alacriti.imdbportal.dao.impl.MovieDAO;
 import com.alacriti.imdbportal.exceptions.BOException;
 import com.alacriti.imdbportal.exceptions.DAOException;
@@ -155,9 +156,28 @@ public class MovieBO extends BaseBO{
 	
 	public void setUserRatetoMovie(int mid,int uid,int rate) throws BOException{
 		MovieDAO mdao=null;
+		float weightedRating;
+		float avgRatingOfAllMovies=0;
+		float movieAvgRating=0;
+		int votesForThisMovie=0;
 		try{
 			mdao=new MovieDAO(getConnection());
-			mdao.setUserRatetoMovie(mid,uid,rate);
+			if(mdao.isThisUserGaveRateTothisMovie(mid,uid)){
+				mdao.insertUserRateToMovie(mid,uid,rate);
+			}
+			else{
+				mdao.updateUserRateToMovie(mid,uid,rate);
+			}
+			mdao.setAvgRatingToMovie(mid);
+			//mdao.setWeightedRating(mid);
+			//mdao.setUserRatetoMovie(mid,uid,rate);
+			avgRatingOfAllMovies=mdao.getAvgRatingOfAllMovies();
+			movieAvgRating=mdao.getMovieAvgRating(mid);
+			votesForThisMovie=mdao.getVotesForThisMovie(mid);
+			weightedRating=(movieAvgRating+avgRatingOfAllMovies)/
+					((float)votesForThisMovie+Constants.MIN_VOTES_FOR_TOP);
+			mdao.setWeightedRating(weightedRating,mid);
+			
 		}catch (DAOException e) {
 			throw new BOException("DAOException Occured");
 		} catch (Exception e) {
@@ -193,7 +213,9 @@ public class MovieBO extends BaseBO{
 		MovieDAO mdao=null;
 		try{
 			mdao=new MovieDAO(getConnection());
-			mdao.deleteMovieFromDB(mid);
+			mdao.deleteMovieFromMovieGenreTable(mid);
+			mdao.deleteMovieFromRateTable(mid);
+			mdao.deleteMovieFromMovieTable(mid);
 		}catch (DAOException e) {
 			throw new BOException("DAOException Occured");
 		} catch (Exception e) {

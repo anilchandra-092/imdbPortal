@@ -277,20 +277,19 @@ public class MovieDAO extends BaseDAO {
 				+" and "+ DBColumnConstants.RATE_TBL_UID +" = "+uid+";";
 		
 	}
-	public void setUserRatetoMovie(int mid,int uid,int rate) throws DAOException{
+	
+	public boolean isThisUserGaveRateTothisMovie(int mid,int uid) throws DAOException{
 		Statement st=null;
 		ResultSet rs=null;
+		boolean result=false;
 		try{
 			st=getConnection().createStatement();
-			rs=st.executeQuery(setUserRatetoMovieSelectSqlCmd(mid,uid));
+			rs=st.executeQuery(isThisUserGaveRateTothisMovieSqlCmd(mid,uid));
 			if(!rs.next()){
-				st.execute(setUserRatetoMovieInsertSqlCmd(mid,uid,rate));
+				result=true;
 			}else{
-				st.execute(setUserRatetoMovieUpdateSqlCmd(mid,uid,rate));
+				result=false;
 			}
-			
-			st.execute(setUserRatetoMovieUpdateMovieTblSqlCmd(mid));
-			setWeightedRating(mid,st);
 			
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -302,26 +301,82 @@ public class MovieDAO extends BaseDAO {
 			close(rs);
 			close(st);
 		}
+		return result; 
 	}
-	private String setUserRatetoMovieSelectSqlCmd(int mid,int uid){
+	
+	
+	public void insertUserRateToMovie(int mid,int uid,int rate) throws DAOException{
+		Statement st=null;
+		
+		try{
+			st=getConnection().createStatement();
+			st.execute(insertUserRateToMovieSqlCmd(mid,uid,rate));
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new DAOException("SQL Exception Occured in insert statement");
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new DAOException();
+		}finally{
+		
+			close(st);
+		}
+	}
+	
+	public void updateUserRateToMovie(int mid,int uid,int rate) throws DAOException{
+		Statement st=null;
+		
+		try{
+			st=getConnection().createStatement();
+			st.execute(updateUserRateToMovieSqlCmd(mid,uid,rate));
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new DAOException("SQL Exception Occured in insert statement");
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new DAOException();
+		}finally{
+		
+			close(st);
+		}
+	}
+	public void setAvgRatingToMovie(int mid) throws DAOException{
+		Statement st=null;
+		
+		try{
+			st=getConnection().createStatement();
+			st.execute(setAvgRatingToMovieSqlCmd(mid));
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new DAOException("SQL Exception Occured in insert statement");
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new DAOException();
+		}finally{
+		
+			close(st);
+		}
+	}
+	
+	private String isThisUserGaveRateTothisMovieSqlCmd(int mid,int uid){
 		return "select * from anilkumarreddyg_imdb_rate_tbl "
 				+" where "+DBColumnConstants.RATE_TBL_MID+"="+mid
 				+" and "+DBColumnConstants.RATE_TBL_UID+"="+uid;
 	}
-	private String setUserRatetoMovieInsertSqlCmd(int mid,int uid,int rate){
+	private String insertUserRateToMovieSqlCmd(int mid,int uid,int rate){
 		return "insert into anilkumarreddyg_imdb_rate_tbl"
 				+"( "+ DBColumnConstants.RATE_TBL_MID +","
 				+ DBColumnConstants.RATE_TBL_UID +","
 				+ DBColumnConstants.RATE_TBL_Rating +" ) "
 				+" values("+mid+","+uid+","+rate+");";
 	}
-	private String setUserRatetoMovieUpdateSqlCmd(int mid,int uid,int rate){
+	private String updateUserRateToMovieSqlCmd(int mid,int uid,int rate){
 		return "update anilkumarreddyg_imdb_rate_tbl "
 				+" set "+ DBColumnConstants.RATE_TBL_Rating +"="+rate
 				+" where "+ DBColumnConstants.RATE_TBL_MID +"="+mid
 				+" and "+ DBColumnConstants.RATE_TBL_UID +"="+uid;
 	}
-	private String setUserRatetoMovieUpdateMovieTblSqlCmd(int mid){
+	private String setAvgRatingToMovieSqlCmd(int mid){
 		return "update anilkumarreddyg_imdb_movie_tbl "
 				+" set "+ DBColumnConstants.MOVIE_TBL_AVG_RATING +" = "
 				+"(select avg("+ DBColumnConstants.RATE_TBL_Rating +") "
@@ -331,32 +386,11 @@ public class MovieDAO extends BaseDAO {
 				+" where "+ DBColumnConstants.MOVIE_TBL_ID +"="+mid+";";
 	}
 	
-	public void setWeightedRating(int mid,Statement st) throws DAOException{
+	public void setWeightedRating(float weightedRating,int mid) throws DAOException{
 		ResultSet rs=null;
-		float weightedRating;
-		float avgRatingOfAllMovies=0;
-		float movieAvgRating=0;
-		int votesForThisMovie=0;
+		Statement st=null;
 		try{
-			
-			rs=st.executeQuery(avgRatingOfAllMoviesSqlCmd());
-			if(rs.next()){
-				avgRatingOfAllMovies=rs.getFloat("wholeAvg");
-				rs.close();
-			}
-			rs=st.executeQuery(movieAvgRatingSqlCmd(mid));
-			if(rs.next()){
-				movieAvgRating=rs.getFloat(DBColumnConstants.MOVIE_TBL_AVG_RATING);
-				rs.close();
-			}
-			rs=st.executeQuery(noOFVotesForMovie(mid));
-			if(rs.next()){
-				votesForThisMovie=rs.getInt("votes");
-				rs.close();
-			}
-		
-			weightedRating=(movieAvgRating+avgRatingOfAllMovies)/
-					((float)votesForThisMovie+Constants.MIN_VOTES_FOR_TOP);
+			st=getConnection().createStatement();
 			st.execute(updateWeightage(weightedRating,mid));
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -364,8 +398,85 @@ public class MovieDAO extends BaseDAO {
 		}catch(Exception e){
 			e.printStackTrace();
 			throw new DAOException();
+		}finally{
+			close(rs);
+			close(st);
 		}
 	}
+	
+	
+	
+	public float getAvgRatingOfAllMovies() throws DAOException{
+		ResultSet rs=null;
+		float avgRatingOfAllMovies=0;
+		Statement st=null;
+		try{
+			st=getConnection().createStatement();
+			rs=st.executeQuery(avgRatingOfAllMoviesSqlCmd());
+			if(rs.next()){
+				avgRatingOfAllMovies=rs.getFloat("wholeAvg");
+				rs.close();
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new DAOException("SQL Exception Occured in Statement of set userRate");
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new DAOException();
+		}finally{
+			close(rs);
+			close(st);
+		}
+		return avgRatingOfAllMovies;
+	}
+	
+	public float getMovieAvgRating(int mid) throws DAOException{
+		ResultSet rs=null;
+		float movieAvgRating=0;
+		Statement st=null;
+		try{
+			st=getConnection().createStatement();
+			rs=st.executeQuery(movieAvgRatingSqlCmd(mid));
+			if(rs.next()){
+				movieAvgRating=rs.getFloat(DBColumnConstants.MOVIE_TBL_AVG_RATING);
+				rs.close();
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new DAOException("SQL Exception Occured in Statement of set userRate");
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new DAOException();
+		}finally{
+			close(rs);
+			close(st);
+		}
+		return movieAvgRating;
+	}
+	public int getVotesForThisMovie(int mid) throws DAOException{
+		ResultSet rs=null;
+		int votesForThisMovie=0;
+		Statement st=null;
+		try{
+			st=getConnection().createStatement();
+			rs=st.executeQuery(noOFVotesForMovie(mid));
+			if(rs.next()){
+				votesForThisMovie=rs.getInt("votes");
+				rs.close();
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new DAOException("SQL Exception Occured in Statement of set userRate");
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new DAOException();
+		}finally{
+			close(rs);
+			close(st);
+		}
+		return votesForThisMovie;
+	}
+	
 	
 	private String avgRatingOfAllMoviesSqlCmd(){
 		return "select avg("+ DBColumnConstants.MOVIE_TBL_AVG_RATING +") as wholeAvg "
@@ -598,12 +709,10 @@ public class MovieDAO extends BaseDAO {
 				+" and "+ DBColumnConstants.MOVIE_GENRES_TBL_GID +"="+gid+";";
 	}
 	
-	public void deleteMovieFromDB(int mid) throws DAOException{
+	public void deleteMovieFromMovieTable(int mid) throws DAOException{
 		Statement st=null;
 		try{
 			st=getConnection().createStatement();
-			st.execute(deleteMovieFromMovieGenreTableSqlCmd(mid));
-			st.execute(deleteMovieFromRateTableSqlCmd(mid));
 			st.execute(deleteMovieFromMovieTableSqlCmd(mid));
 					
 		}catch(SQLException e){
@@ -616,17 +725,53 @@ public class MovieDAO extends BaseDAO {
 			close(st);
 		}
 	}
-	private String deleteMovieFromMovieGenreTableSqlCmd(int mid){
-		return "delete from anilkumarreddyg_imdb_movie_genres_tbl "
-				+" where "+ DBColumnConstants.MOVIE_GENRES_TBL_MID +"="+mid+";"; 
-	}
-	private String deleteMovieFromRateTableSqlCmd(int mid){
-		return "delete from anilkumarreddyg_imdb_rate_tbl "
-				+" where "+ DBColumnConstants.RATE_TBL_MID +"="+mid+";"; 
-	}
+	
 	private String deleteMovieFromMovieTableSqlCmd(int mid){
 		return "delete from anilkumarreddyg_imdb_movie_tbl "
 				+" where "+ DBColumnConstants.MOVIE_TBL_ID +"="+mid+";"; 
 	}
 
+	public void deleteMovieFromMovieGenreTable(int mid) throws DAOException{
+		Statement st=null;
+		try{
+			st=getConnection().createStatement();
+			st.execute(deleteMovieFromMovieGenreTableSqlCmd(mid));
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new DAOException("SQL Exception Occured indeleteStatement");
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new DAOException();
+		}finally{
+			close(st);
+		}
+	}
+	
+	private String deleteMovieFromMovieGenreTableSqlCmd(int mid){
+		return "delete from anilkumarreddyg_imdb_movie_genres_tbl "
+				+" where "+ DBColumnConstants.MOVIE_GENRES_TBL_MID +"="+mid+";"; 
+	}
+	
+	public void deleteMovieFromRateTable(int mid) throws DAOException{
+		Statement st=null;
+		try{
+			st=getConnection().createStatement();
+			st.execute(deleteMovieFromRateTableSqlCmd(mid));
+					
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new DAOException("SQL Exception Occured indeleteStatement");
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new DAOException();
+		}finally{
+			close(st);
+		}
+	}
+	
+	private String deleteMovieFromRateTableSqlCmd(int mid){
+		return "delete from anilkumarreddyg_imdb_rate_tbl "
+				+" where "+ DBColumnConstants.RATE_TBL_MID +"="+mid+";"; 
+	}
+	
 }
