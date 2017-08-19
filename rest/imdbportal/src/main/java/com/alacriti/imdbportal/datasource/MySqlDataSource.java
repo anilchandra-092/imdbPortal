@@ -11,11 +11,15 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
+
 import com.alacriti.imdbportal.util.ExceptionUtil;
 
 
 
 public final class MySqlDataSource {
+	
+	public static final Logger log= Logger.getLogger(MySqlDataSource.class);
 
 	private static MySqlDataSource ms_this = null;
 	private static DataSource dbSource = null;
@@ -29,6 +33,7 @@ public final class MySqlDataSource {
 	}
 
 	public static MySqlDataSource getInstance() {
+		log.debug("=========>> getInstance method in MySqlDataSource class ::");
 		synchronized (MySqlDataSource.class) {
 			if (ms_this == null) {
 				synchronized (MySqlDataSource.class) {
@@ -41,24 +46,29 @@ public final class MySqlDataSource {
 	}
 
 	protected void initialize() {
-		
+		log.debug("=========>> initialize method in MySqlDataSource class ::");
 		try {
 			if (dbSource == null) {
 				System.out.println("DataSource  looking up URL " + "java:jboss/datasources/TRAINEEE");
 				InitialContext aInitialContext = new InitialContext();
 				dbSource = (DataSource) aInitialContext.lookup("java:jboss/datasources/TRAINEEE");
 
-System.out.println("DataSource dbSource was null and was successfully setup by looking up URL "
+				System.out.println("DataSource dbSource was null and was successfully setup by looking up URL "
+						+ "java:jboss/datasources/TRAINEEE");
+				log.debug("DataSource dbSource was null and was successfully setup by looking up URL "
 						+ "java:jboss/datasources/TRAINEEE");
 			}
 		} catch (NamingException e) {
+			log.error("NamingException in initialize " + e.getMessage(), e);
 			System.out.println("NamingException in initialize " + e.getMessage());
 		} catch (Exception e) {
+			log.error("Exception in initialize " + e.getMessage(), e);
 			System.out.println("Exception in initialize " + e.getMessage());
 		}
 	}
 
 	public Connection getConnection() {
+		log.debug("=========>> getConnection method in MySqlDataSource class ::");
 		try {
 			Connection dbCon = dbSource.getConnection();
 			dbCon.setAutoCommit(false);
@@ -83,17 +93,18 @@ System.out.println("DataSource dbSource was null and was successfully setup by l
 			 */
 			return dbCon;
 		} catch (Exception e) {
+			log.error("Exception in getConnection " + e.getMessage(),e);
 			System.out.println("Exception in getConnection " + e.getMessage());
 		}
 		return null;
 	}
 
 	private static final Map<String, String> openConnIdMap = new HashMap<String, String>();
-	private static final boolean isConneLeakChkEnabled = true;// connLog.isInfoEnabled();
+	//private static final boolean isConneLeakChkEnabled = true;// connLog.isInfoEnabled();
 	private static final Object connLeakVarlock = new Object();
 
 	static class Handler implements InvocationHandler {
-
+		
 		Connection conn;
 		String id;
 
@@ -128,7 +139,7 @@ System.out.println("DataSource dbSource was null and was successfully setup by l
 				}
 				return method.invoke(conn, args);
 			} catch (InvocationTargetException e) {
-
+				log.error("InvocationTargetException in invoke " + e.getMessage(), e);
 				System.out.println("InvocationTargetException in invoke " + e.getMessage());
 				throw e.getTargetException();
 			}
@@ -140,6 +151,7 @@ System.out.println("DataSource dbSource was null and was successfully setup by l
 	private static int connOpenedNow = 0;
 
 	public static void printConnectionLeakTrace() {
+	
 		System.out.println("printConnectionLeakTrace(): Start");
 
 		if (openConnIdMap.size() > 0) {

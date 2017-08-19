@@ -6,19 +6,25 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
 import com.alacriti.imdbportal.bo.impl.UserBO;
 import com.alacriti.imdbportal.bo.impl.UserValidate;
+import com.alacriti.imdbportal.exceptions.BOException;
 import com.alacriti.imdbportal.models.LoginModel;
 import com.alacriti.imdbportal.models.User;
 
 public class UserDelegate extends BaseDelegate{
 	
+	public static final Logger log= Logger.getLogger(UserDelegate.class);
+	
 	public UserDelegate() {
 		super();
 	}
+	
 	public  JSONObject addUser(User usr){
+		log.debug("=========>> addUser method in UserDelegate class ::");
 		UserBO userbo=null;
 		JSONObject obj=null;
 		Connection connection=null;
@@ -52,9 +58,15 @@ public class UserDelegate extends BaseDelegate{
 				rollBack=true;
 				obj=createJsonObject("Fail","Please Insert the Valid Data");
 			}
+		}catch(BOException e){
+			rollBack=true;
+			e.printStackTrace();
+			obj=createJsonObject("Fail","not able to addd user");
+			log.error("BOException in addUser : "+ e.getMessage(), e);
 		}catch(Exception e){
 			rollBack=true;
 			obj=createJsonObject("Fail","not able to addd user");
+			log.error("Exception in addUser : "+ e.getMessage(), e);
 		}finally{
 			endDBTransaction(connection, rollBack);
 		}
@@ -62,6 +74,7 @@ public class UserDelegate extends BaseDelegate{
 	}
 	
 	public JSONObject checkUser(LoginModel login){
+		log.debug("=========>> checkUser method in UserDelegate class ::");
 		UserBO userbo=null;
 		JSONObject obj=null;
 		Connection connection=null;
@@ -97,9 +110,15 @@ public class UserDelegate extends BaseDelegate{
 			else{
 				obj=createJsonObject("Fail","Invalid UserName or Password");
 			}
+		}catch(BOException e){
+			rollBack=true;
+			e.printStackTrace();
+			obj=createJsonObject("Fail","Exception occured");
+			log.error("BOException in checkUser : "+ e.getMessage(), e);
 		}catch(Exception e){
 			rollBack=true;
 			obj=createJsonObject("Fail","Exception occured");
+			log.error("Exception in checkUser : "+ e.getMessage(), e);
 		}finally{
 			endDBTransaction(connection, rollBack);
 		}
@@ -114,6 +133,7 @@ public class UserDelegate extends BaseDelegate{
 	}
 	
 	public List<User> getNewUsers(){
+		log.debug("=========>> getNewUsers method in UserDelegate class ::");
 		UserBO userbo=null;
 		List<User> list=null;
 		Connection connection=null;
@@ -123,7 +143,12 @@ public class UserDelegate extends BaseDelegate{
 			setConnection(connection);
 			userbo=new UserBO(connection);
 			list=userbo.getNewUsers();
+		}catch(BOException e){
+			log.error("BOException in getNewUsers : "+ e.getMessage(), e);
+			rollBack=true;
+			e.printStackTrace();
 		}catch(Exception e){
+			log.error("Exception in getNewUsers : "+ e.getMessage(), e);	
 			e.printStackTrace();
 			rollBack=true;
 		}finally{
@@ -133,6 +158,7 @@ public class UserDelegate extends BaseDelegate{
 	}
 	
 	public boolean updateUserStatus(int userId,String status){
+		log.debug("=========>> updateUserStatus method in UserDelegate class ::");
 		UserBO userbo=null;
 		boolean result=false;
 		Connection connection=null;
@@ -142,7 +168,12 @@ public class UserDelegate extends BaseDelegate{
 			setConnection(connection);
 			userbo=new UserBO(connection);
 			result=userbo.updateUserStatus(userId,status);
+		}catch(BOException e){
+			log.error("BOException in updateUserStatus : "+ e.getMessage(), e);
+			rollBack=true;
+			e.printStackTrace();
 		}catch(Exception e){
+			log.error("Exception in updateUserStatus : "+ e.getMessage(), e);
 			e.printStackTrace();
 			rollBack=true;
 		}finally{
@@ -152,6 +183,7 @@ public class UserDelegate extends BaseDelegate{
 	}
 	
 	public User getSessionData(HttpServletRequest request){
+		log.debug("=========>> getSessionData method in UserDelegate class ::");
 		User user=null;
 		HttpSession session=null;
 		try{
@@ -164,6 +196,7 @@ public class UserDelegate extends BaseDelegate{
 			}
 			
 		}catch(Exception e){
+			log.error("exception Occured in getting session attributes in user delegate layer: "+ e.getMessage(), e);
 			System.out.println("exception Occured in getting session attributes in user delegate layer");
 			e.printStackTrace();
 		}

@@ -8,11 +8,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.alacriti.imdbportal.constants.DBColumnConstants;
 import com.alacriti.imdbportal.exceptions.DAOException;
 import com.alacriti.imdbportal.models.User;
 
 public class UserDAO extends BaseDAO {
+	
+	public static final Logger log= Logger.getLogger(UserDAO.class);
 	
 	public UserDAO() {
 		super();
@@ -24,6 +28,7 @@ public class UserDAO extends BaseDAO {
 	}
 	
 	public  boolean addUserToDb(User usr)throws DAOException{
+		log.debug("=========>> addUserToDb method in UserDAO class ::");
 		boolean result=false;
 		PreparedStatement pst=null;
 		try{
@@ -36,10 +41,12 @@ public class UserDAO extends BaseDAO {
 			pst.executeUpdate();
 			result=true;
 		}catch(SQLException e){
+			log.error("SQL Exception Occured in addUserToDb: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException("SQL Exception Occured in preparedStatement");
 		}
 		catch(Exception e){
+			log.error("Exception Occured in addUserToDb: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException();
 		}finally{
@@ -58,6 +65,7 @@ public class UserDAO extends BaseDAO {
 	}
 	
 	public boolean isUserNameExist(String uname) throws DAOException{
+		log.debug("=========>> isUserNameExist method in UserDAO class ::");
 		boolean result=false;
 		Statement st=null;
 		ResultSet rs=null;
@@ -68,10 +76,12 @@ public class UserDAO extends BaseDAO {
 				result=true;
 			}
 		}catch(SQLException e){
+			log.error("SQL Exception Occured in isUserNameExist: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException("SQL Exception Occured in selectStatement");
 		}
 		catch(Exception e){
+			log.error("Exception Occured in isUserNameExist: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException();
 		}finally{
@@ -88,6 +98,7 @@ public class UserDAO extends BaseDAO {
 	}
 	
 	public boolean isUserEmailExist(String email) throws DAOException{
+		log.debug("=========>> isUserEmailExist method in UserDAO class ::");
 		boolean result=false;
 		Statement st=null;
 		ResultSet rs=null;
@@ -98,10 +109,12 @@ public class UserDAO extends BaseDAO {
 				result=true;
 			}
 		}catch(SQLException e){
+			log.error("SQL Exception Occured in isUserEmailExist: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException("SQL Exception Occured in selectStatement");
 		}
 		catch(Exception e){
+			log.error("Exception Occured in isUserEmailExist: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException();
 		}finally{
@@ -118,6 +131,7 @@ public class UserDAO extends BaseDAO {
 	}
 	
 	public boolean isApprovedUser(String uname) throws DAOException{
+		log.debug("=========>> isApprovedUser method in UserDAO class ::");
 		boolean result=false;
 		Statement st=null;
 		ResultSet rs=null;
@@ -128,10 +142,12 @@ public class UserDAO extends BaseDAO {
 				result=true;
 			}
 		}catch(SQLException e){
+			log.error("SQL Exception Occured in isApprovedUser: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException("SQL Exception Occured in selectStatement");
 		}
 		catch(Exception e){
+			log.error("Exception Occured in isApprovedUser: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException();
 		}finally{
@@ -149,6 +165,7 @@ public class UserDAO extends BaseDAO {
 	}
 	
 	public User checkUnameAndPassword(String uname,String password) throws DAOException{
+		log.debug("=========>> checkUnameAndPassword method in UserDAO class ::");
 		Statement st=null;
 		ResultSet rs=null;
 		User user=null;
@@ -159,10 +176,12 @@ public class UserDAO extends BaseDAO {
 				user=getUser(rs);
 			}
 		}catch(SQLException e){
+			log.error("SQL Exception Occured in checkUnameAndPassword: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException("SQL Exception Occured in selectStatement");
 		}
 		catch(Exception e){
+			log.error("Exception Occured in checkUnameAndPassword: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException();
 		}finally{
@@ -173,6 +192,7 @@ public class UserDAO extends BaseDAO {
 	}
 	
 	private User getUser(ResultSet rs) throws DAOException{
+		log.debug("=========>> getUser method in UserDAO class ::");
 		User user=null;
 		try{
 			user=new User(
@@ -182,10 +202,12 @@ public class UserDAO extends BaseDAO {
 					rs.getString(DBColumnConstants.USER_PROFILE_TBL_ROLE));
 			
 		}catch(SQLException e){
+			log.error("SQL Exception Occured in Processing ResultSet: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException("SQL Exception Occured in Processing ResultSet");
 		}
 		catch(Exception e){
+			log.error("Exception Occured in Processing ResultSet: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException();
 		}
@@ -199,6 +221,7 @@ public class UserDAO extends BaseDAO {
 	}
 	
 	public List<User> getNewUsers() throws DAOException{
+		log.debug("=========>> getNewUsers method in UserDAO class ::");
 		List<User> list=null;
 		Statement st=null;
 		ResultSet rs=null;
@@ -210,10 +233,12 @@ public class UserDAO extends BaseDAO {
 				list.add(getUser(rs));
 			} 
 		}catch(SQLException e){
+			log.error("SQL Exception Occured in getNewUsers: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException("SQL Exception Occured in selectStatement");
 		}
 		catch(Exception e){
+			log.error("Exception Occured in getNewUsers: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException();
 		}finally{
@@ -222,12 +247,14 @@ public class UserDAO extends BaseDAO {
 		}
 		return list;
 	}
+	
 	private String getNewUsersSqlCmd(){
 		return "select * from anilkumarreddyg_imdb_user_profile_tbl "
 				+" where "+DBColumnConstants.USER_PROFILE_TBL_STATUS+"=1"; 
 	}
 	
 	public boolean updateUserStatus(int userId,String status) throws DAOException{
+		log.debug("=========>> updateUserStatus method in UserDAO class ::");
 		boolean result=false;
 		Statement st=null;
 		int statusId;
@@ -243,10 +270,12 @@ public class UserDAO extends BaseDAO {
 			st.executeUpdate(updateUserStatusSqlCmd(userId,statusId));
 			result=true;
 		}catch(SQLException e){
+			log.error("SQL Exception Occured in updateUserStatus: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException("SQL Exception Occured in updateStatement");
 		}
 		catch(Exception e){
+			log.error("Exception Occured in updateUserStatus: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException();
 		}finally{
@@ -263,6 +292,7 @@ public class UserDAO extends BaseDAO {
 	}
 	
 	public String getUserMailId(int userId) throws DAOException{
+		log.debug("=========>> getUserMailId method in UserDAO class ::");
 		String email="";
 		Statement st=null;
 		ResultSet rs=null;;
@@ -273,10 +303,12 @@ public class UserDAO extends BaseDAO {
 				email=rs.getString(DBColumnConstants.USER_PROFILE_TBL_EMAIL);
 			}
 		}catch(SQLException e){
+			log.error("SQL Exception Occured in getUserMailId: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException("SQL Exception Occured in selectStatement");
 		}
 		catch(Exception e){
+			log.error("Exception Occured in getUserMailId: " + e.getMessage(), e);
 			e.printStackTrace();
 			throw new DAOException();
 		}finally{
@@ -285,6 +317,7 @@ public class UserDAO extends BaseDAO {
 		}
 		return email;
 	}
+
 	private String getUserMailIdSqlCmd(int userId){
 		return "select "+DBColumnConstants.USER_PROFILE_TBL_EMAIL
 				+" from anilkumarreddyg_imdb_user_profile_tbl "

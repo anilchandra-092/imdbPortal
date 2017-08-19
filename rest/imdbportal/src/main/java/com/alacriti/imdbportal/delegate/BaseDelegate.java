@@ -3,26 +3,30 @@ package com.alacriti.imdbportal.delegate;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 import com.alacriti.imdbportal.datasource.MySqlDataSource;
 
 
 public class BaseDelegate {
 
 	private Connection connection;
-	
+	public static final Logger log= Logger.getLogger(BaseDelegate.class);
 	public BaseDelegate() {
 	}
 
 	public void setConnection(Connection _connection) {
+		log.debug("=========>> setConnection method in BaseDelegate class ::");
 		this.connection = _connection;
 	}
 
 	public Connection getConnection() {
+		log.debug("=========>> getConnection method in BaseDelegate class ::");
 		return connection;
 	}
 
 	protected void endDBTransaction(Connection connection) {
-		
+		log.debug("=========>> endDBTransaction method in BaseDelegate class ::");
 		try {
 			connection.commit();
 
@@ -34,12 +38,14 @@ public class BaseDelegate {
 				System.out.println("SQLException in endDBTransaction" + e1.getMessage());
 			}
 		} catch (Exception e) {
+			log.error("Exception in endDBTransaction "+e.getMessage(),e);
 			System.out.println("Exception in endDBTransaction" + e.getMessage());
 		} finally {
 			try {
 				if (connection != null)
 					connection.close();
 			} catch (SQLException e) {
+				log.error("SQLException in endDBTransaction "+e.getMessage(),e);
 				System.out.println("SQLException in endDBTransaction" + e.getMessage());
 			}
 		}
@@ -47,7 +53,7 @@ public class BaseDelegate {
 	}
 
 	protected void endDBTransaction(Connection connection, boolean isRollback) {
-		
+		log.debug("=========>> endDBTransaction method in BaseDelegate class ::");
 		if (isRollback) {
 			try {
 				connection.rollback();
@@ -61,6 +67,7 @@ public class BaseDelegate {
 					if (connection != null)
 						connection.close();
 				} catch (SQLException e) {
+					log.error("SQLException in endDBTransaction "+e.getMessage(),e);
 					System.out.println("SQLException in endDBTransaction " + e.getMessage());
 				}
 			}
@@ -71,6 +78,7 @@ public class BaseDelegate {
 	}
 
 	protected Connection startDBTransaction() {
+		log.debug("=========>> startDBTransaction method in BaseDelegate class ::");
 		Connection conn = null;
 		try {
 			if (conn == null || conn.isClosed())
@@ -78,6 +86,7 @@ public class BaseDelegate {
 
 			conn.setAutoCommit(false);
 		} catch (SQLException e) {
+			log.error("SQLException in startDBTransaction "+e.getMessage(),e);
 			System.out.println("SQLException in startDBTransaction " + e.getMessage());
 		}
 		return conn;

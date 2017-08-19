@@ -10,11 +10,15 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.log4j.Logger;
+
 public class MailUtil {
+	public static final Logger log= Logger.getLogger(MailUtil.class);
+	
 	public MailUtil() {}
 	
 	public  boolean send(String to,String status){  
-		
+		log.debug("=============>> send method in MailUtil class");
 		boolean result=false;
 		final String from = "anilkumarreddy.gangammagari@alacriti.com";
 		final String password = "8333032071";
@@ -54,11 +58,13 @@ public class MailUtil {
          message.setText(msg);    
          
          //send message  
-         Transport.send(message);    
+         Transport.send(message);  
+         log.debug("message sent successfully...");
          System.out.println("message sent successfully...");    
          result=true;
         } catch (MessagingException e) {
         	e.printStackTrace();
+        	log.error("Exception ending Mail :: "+e.getMessage(),e);
 			System.out.println("Fail in sending Mail");
 			result=false;
         }    

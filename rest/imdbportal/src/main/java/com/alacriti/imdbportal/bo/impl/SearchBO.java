@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.alacriti.imdbportal.constants.DBColumnConstants;
 import com.alacriti.imdbportal.dao.impl.SearchDAO;
 import com.alacriti.imdbportal.exceptions.BOException;
@@ -13,6 +15,7 @@ import com.alacriti.imdbportal.models.Movie;
 import com.alacriti.imdbportal.models.SearchModel;
 
 public class SearchBO extends BaseBO{
+	public static final Logger log= Logger.getLogger(SearchBO.class);
 
 	public SearchBO() {
 		super();
@@ -23,6 +26,7 @@ public class SearchBO extends BaseBO{
 	}
 	
 	public boolean isSearchObjectValuesValid(SearchModel searchObj) throws ValidateException{
+		log.debug("=========>> isSearchObjectValuesValid method in SearchBO class ::");
 		boolean result=false;
 		String searchOption;
 		try{
@@ -51,13 +55,15 @@ public class SearchBO extends BaseBO{
 				result=false;
 			}
 		}catch(Exception e){
-			e.printStackTrace();
+			//e.printStackTrace();
+			log.error("Exception in isSearchObjectValuesValid of searchBo " + e.getMessage(), e);
 			throw new ValidateException("validation Failed in SearchBO");
 		}
 		return result;
 	}
 	
 	public List<Movie> getAllMovies(int start,int end,SearchModel searchObj) throws BOException{
+		log.debug("=========>> getAllMovies method in SearchBO class ::");
 		SearchDAO searchDao=null;
 		List<Movie> list=null;
 		List<Movie> result=null;
@@ -88,14 +94,17 @@ public class SearchBO extends BaseBO{
 			}
 			
 		}catch (DAOException e) {
+			log.error("DAOException in getAllMovies of searchBo " + e.getMessage(), e);
 			throw new BOException("DAOException Occured");
 		} catch (Exception e) {
+			log.error("Exception in getAllMovies of searchBo " + e.getMessage(), e);
 			throw new BOException();
 		}
 		return result;
 	}
 	
 	public int getMoviesCount(SearchModel searchObj) throws BOException{
+		log.debug("=========>> getMoviesCount method in SearchBO class ::");
 		SearchDAO searchDao=null;
 		int result=0;
 		String searchOption;
@@ -115,8 +124,10 @@ public class SearchBO extends BaseBO{
 			}
 			
 		}catch (DAOException e) {
+			log.error("DAOException in getMoviesCount of searchBo " + e.getMessage(), e);
 			throw new BOException("DAOException Occured");
 		} catch (Exception e) {
+			log.error("Exception in getMoviesCount of searchBo " + e.getMessage(), e);
 			throw new BOException();
 		}
 		return result;
