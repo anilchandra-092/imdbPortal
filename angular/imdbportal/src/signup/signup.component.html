@@ -3,9 +3,9 @@
 
   <div class="well text-center" *ngIf="isVisible">
     {{userMessage}}
-    <p *ngIf="statusObj.status=='Success'">u can login here : <a routerLink="/login" routerLinkActive="active">Login</a></p>
+    <p *ngIf="loginStatus">u can login here : <a routerLink="/login" routerLinkActive="active">Login</a></p>
   </div>
-
+  <div class="well">
   <form class="form-horizontal" [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label class="control-label col-sm-2">Name:</label>
@@ -79,5 +79,6 @@
       </div>
     </div>
   </form>
+  </div>
 
 </div>

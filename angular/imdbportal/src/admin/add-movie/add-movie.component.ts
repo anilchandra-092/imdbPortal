@@ -110,7 +110,7 @@ export class AddMovieComponent {
           console.log(error);
         },
         () => {
-          this.callBackFunction()
+          this.callBackFunction();
         }
       );
     console.log("==>2", formData);
@@ -118,7 +118,7 @@ export class AddMovieComponent {
 
   callBackFunction() {
     if (this.statusObj.status == "Fail") {
-      this.userMessage = "movie is not added to the database";
+      this.userMessage = "movie is not added to the database please insert appropriate data properly";
 
     }
     else {

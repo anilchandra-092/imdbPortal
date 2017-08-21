@@ -77,4 +77,7 @@ export class LoginComponent{
       this.router.navigate(["admin"]);
     }
   }
+  onRegistration(){
+    this.router.navigate(["signup"]);
+  }
 }

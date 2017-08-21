@@ -13,6 +13,7 @@ export class SignupComponent {
   statusObj;
   isVisible=false;
   errorMsg;
+  loginStatus=false;
 
   constructor(private _formBuilder:FormBuilder,private _userService:UserdataServiceComponent){}
 
@@ -23,15 +24,11 @@ export class SignupComponent {
     this.userForm=this._formBuilder.group({
       uname:[null,[Validators.required,Validators.minLength(4),Validators.pattern("^[a-zA-Z0-9_]{4,50}$")]],
       password:[null,[Validators.pattern("^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{8,16}$")]],
-      confpass:[null,[Validators.pattern("^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{8,16}$")]],
+      confpass: [null,[Validators.pattern("^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{8,16}$")]],
       email:[],
       role:[null,[Validators.required]]
     });
 
-  }
-
-  onChange(event) {
-    console.log( event.target.files[0].name );
   }
 
   onSubmit(){
@@ -59,11 +56,12 @@ export class SignupComponent {
       this.userMessage=this.statusObj.message;
 
     }
-    else{
-      this.userMessage="u registred successfully now login";
+    else {
+      this.userMessage = "u registred successfully now login";
+      this.loginStatus = true;
       this.userForm.reset();
     }
-    this.isVisible=true;
+    this.isVisible = true;
 
   }
 }
