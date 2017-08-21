@@ -76,13 +76,27 @@ public class UserValidate extends BaseBO{
 		log.debug("=========>> isValidData method in UserValidate class ::");
 		boolean result=true;
 		if(uname.length()<4 || uname.length()>50){
-			return false;
+			result= false;
 		}
 		if(!Pattern.matches("^[a-zA-Z0-9_]{4,50}$",uname)){
-			return false;
+			result= false;
 		}
 		if(!Pattern.matches("^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{8,16}$", password)){
-			return false;
+			result= false;
+		}
+		return result;
+	}
+	public boolean isValidData(String uname,String password,String email){
+		log.debug("=========>> isValidData method in UserValidate class ::");
+		boolean result=false;
+		boolean isValidUnameAndPassword=isValidData(uname, password);
+		boolean isValidEmail=Pattern.matches("^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$",email);
+		System.out.println("u&p: "+isValidUnameAndPassword);
+		log.debug("=========>> username & password validation return  :"+isValidUnameAndPassword);
+		log.debug("=========>> email validation return : "+isValidEmail);
+		if(isValidUnameAndPassword  && isValidEmail){
+			log.info("=========>> user data validation fail: bcz of in valid data");
+			result= true;
 		}
 		return result;
 	}

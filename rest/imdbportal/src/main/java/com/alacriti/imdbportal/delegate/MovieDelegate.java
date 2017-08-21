@@ -251,23 +251,30 @@ public class MovieDelegate extends BaseDelegate{
 		}
 	}
 	
-	public void addMovie(Movie movie) throws Exception{
+	public boolean addMovie(Movie movie) throws Exception{
 		log.debug("=========>> addMovie method in MovieDelegate class ::");
 		MovieBO mbo=null;
 		Connection connection=null;
-		boolean rollBack = false;
+		boolean rollBack = false,added=false;;
 		try{
 			connection = startDBTransaction();
 			setConnection(connection);
 			mbo=new MovieBO(connection);
-			mbo.addMovie(movie);
-			
+			if(mbo.isNotNullCheckPass(movie)){
+				mbo.addMovie(movie);
+				added=true;
+			}
+			else{
+				added=false;
+			}
 		}catch(BOException e){
+			added=false;
 			log.error("BOException in addMovie : "+ e.getMessage(), e);
 			rollBack=true;
 			e.printStackTrace();
 			throw e;
 		}catch(Exception e){
+			added=false;
 			log.error("Exception in addMovie : "+ e.getMessage(), e);
 			rollBack=true;
 			e.printStackTrace();
@@ -275,6 +282,7 @@ public class MovieDelegate extends BaseDelegate{
 		}finally{
 			endDBTransaction(connection, rollBack);
 		}
+		return added;
 	}
 	
 	public void updateMovie(int movieId,Movie movie) throws Exception{

@@ -34,7 +34,7 @@ public class UserDelegate extends BaseDelegate{
 			connection = startDBTransaction();
 			setConnection(connection);
 			userValidate=new UserValidate(connection);
-			if(userValidate.isValidData(usr.getUname(),usr.getPassword())){
+			if(userValidate.isValidData(usr.getUname(),usr.getPassword(),usr.getEmail())){
 				if(userValidate.isUserNameExist(usr.getUname())){
 					obj=createJsonObject("Fail","user name allready exists");
 				}

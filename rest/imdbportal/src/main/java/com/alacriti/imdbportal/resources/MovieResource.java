@@ -206,11 +206,17 @@ public class MovieResource {
 		log.debug("=========>> addMovie method in MovieResource class ::");
 		JSONObject obj=null;
 		MovieDelegate movieDelegate=null;
+		boolean added=false;
 		try{
 			obj=new JSONObject();
 			movieDelegate=new MovieDelegate();
-			movieDelegate.addMovie(movie);
-			obj.put("Status","Success");
+			added=movieDelegate.addMovie(movie);
+			if(added){
+				obj.put("Status","Success");
+			}
+			else{
+				obj.put("Status","Fail");
+			}
 		}catch(Exception e){
 			log.error("Exception in addMovie of MovieResource : "+ e.getMessage(), e);
 			obj.put("Status","Fail");

@@ -227,6 +227,15 @@ public class MovieBO extends BaseBO{
 		}
 	}
 	
+	public boolean isNotNullCheckPass(Movie movie){
+		if(movie.getTitle()!=null && movie.getShortDescription()!=null &&movie.getDirector()!=null){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	
 	public void updateMovie(int movieId,Movie movie) throws BOException{
 		log.debug("=========>> updateMovie method in MovieBO class ::");
 		MovieDAO mdao=null;
